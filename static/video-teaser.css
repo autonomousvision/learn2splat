@@ -1,0 +1,168 @@
+.video-teaser {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  padding: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.video-teaser-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.video-teaser-kicker {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+
+.video-teaser-scenes {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.video-teaser-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.video-teaser-canvas-wrap {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  width: 100%;
+  max-width: 960px;
+}
+
+#videoTeaserCanvas {
+  display: block;
+  width: min(960px, 100%);
+  height: auto;
+  cursor: crosshair;
+}
+
+.video-teaser-sources {
+  display: none;
+}
+
+.video-teaser-playpause {
+  border: 1px solid var(--border2);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 5px 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.video-teaser-scene-btn {
+  border: 1px solid var(--border2);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.video-teaser-scene-btn.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+@media (max-width: 960px) {
+  #videoTeaserCanvas {
+    cursor: default;
+  }
+}
+
+@media (max-width: 520px) {
+  .video-teaser {
+    padding: 10px;
+  }
+
+  .video-teaser-toolbar {
+    margin-bottom: 8px;
+  }
+
+  .video-teaser-scenes {
+    gap: 5px;
+  }
+
+  .video-teaser-scene-btn {
+    font-size: 9px;
+    padding: 4px 8px;
+  }
+}
+
+
+
+
+
+/* playback bar: play/pause, a scrubber to move through the optimization, and the
+   iteration the current frame belongs to */
+.video-teaser-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  max-width: 960px;
+}
+
+.video-teaser-scrub {
+  flex: 1;
+  min-width: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.video-teaser-time {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted2);
+  /* fixed box so the bar doesn't shift as the label counts up */
+  width: 9ch;
+  flex: none;
+  text-align: right;
+}
+
+@media (max-width: 520px) {
+  .video-teaser-time {
+    width: 7ch;
+    font-size: 11px;
+  }
+}
+
+/* the dense group's asterisk, answered by the note under the widget */
+.video-btn-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.video-pill-mark {
+  position: absolute;
+  top: -6px;
+  right: -5px;
+  z-index: 1;
+  color: var(--green);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+  pointer-events: none;
+}

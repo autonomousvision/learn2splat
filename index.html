@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Learn2Splat: Extending the Horizon of Learned 3DGS
+            Optimization</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+            rel="stylesheet" />
+        <link rel="stylesheet" href="static/style.css" />
+        <link rel="stylesheet" href="static/video-teaser.css" />
+        <script src="static/video-teaser.js" defer></script>
+        <link rel="icon" type="image/svg+xml"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🫧</text></svg>" />
+    </head>
+    <body>
+
+
+        <!-- ══ NAV ══ -->
+        <nav>
+            <span class="nav-brand">Learn2Splat</span>
+            <div class="nav-links">
+                <a href="#abstract">Abstract</a>
+                <a href="#method">Method</a>
+                <a href="#results">Results</a>
+                <a href="#more-results">More results</a>
+                <a href="#analysis">Analysis</a>
+                <a href="#video">Video</a>
+                <a href="#citation">Citation</a>
+            </div>
+        </nav>
+
+        <!-- ══ HERO ══ -->
+
+        <div class="hero">
+            <h1><em>Learn2Splat</em>: Extending the <em>Horizon</em>
+                of<br>Learned 3DGS Optimization</h1>
+
+            <p class="hero-sub">A meta-learned optimizer for 3D Gaussian
+                Splatting that reaches higher quality than Adam at equal
+                wall-clock time and keeps improving over long optimization
+                horizons, with one model for both sparse- and dense-view
+                settings.</p>
+
+            <div class="authors">
+                <div class="author-row">
+                    <span class="author-item"><a
+                            href="https://naamapearl.github.io/">Naama
+                            Pearl*</a><sup>1</sup></span>
+                    <span class="author-item"><a
+                            href="https://s-esposito.github.io/">Stefano
+                            Esposito*</a><sup>1</sup></span>
+                    <span class="author-item"><a
+                            href="https://haofeixu.github.io/">Haofei
+                            Xu</a><sup>1,3</sup></span>
+                    <span class="author-item"><a
+                            href="https://amitpeleg.github.io/">Amit
+                            Peleg</a><sup>1</sup></span>
+                    <span class="author-item"><a
+                            href="https://patriciagschossmann.github.io/">Patricia
+                            Gschossmann</a><sup>1</sup></span>
+                </div>
+                <div class="author-row">
+                    <span class="author-item"><a
+                            href="https://scholar.google.it/citations?user=vW1gaVEAAAAJ&hl=it">Lorenzo
+                            Porzi</a><sup>2</sup></span>
+                    <span class="author-item"><a
+                            href="https://scholar.google.co.uk/citations?user=CxbDDRMAAAAJ&hl=en">Peter
+                            Kontschieder</a><sup>2</sup></span>
+                    <span class="author-item"><a
+                            href="https://virtualhumans.mpi-inf.mpg.de/people/pons-moll.html">Gerard
+                            Pons-Moll</a><sup>1</sup></span>
+                    <span class="author-item"><a
+                            href="http://www.cvlibs.net/">Andreas
+                            Geiger</a><sup>1</sup></span>
+                </div>
+            </div>
+            <div class="affils">
+                <span><sup>1</sup>University of Tübingen, Tübingen AI
+                    Center</span>
+                <span><sup>2</sup>Meta Reality Labs</span>
+                <span><sup>3</sup>ETH Zurich</span>
+            </div>
+
+            <div class="btns">
+                <!-- <a href="#" class="btn btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor"
+                        stroke-width="2">
+                        <path
+                            d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14,2 14,8 20,8" />
+                    </svg>
+                    arXiv
+                </a> -->
+                <a href="https://github.com/autonomousvision/learn2splat" class="btn btn-outline">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z" />
+                    </svg>
+                    Code (Will be released)
+                </a>
+                <!-- <a href="static/paper_compressed.pdf"
+                    class="btn btn-outline">
+                    <svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor"
+                        stroke-width="2">
+                        <path
+                            d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14,2 14,8 20,8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                    </svg>
+                    Paper <span class="btn-sub">&lt;1MB</span>
+                </a> -->
+                <a href="https://arxiv.org/pdf/2605.15760" class="btn btn-outline">
+                    <svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor"
+                        stroke-width="2">
+                        <path
+                            d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14,2 14,8 20,8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                    </svg>
+                    Paper <span class="btn-sub">arXiv</span>
+                </a>
+                <!--    <a href="#" class="btn btn-outline">-->
+                <!--      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/></svg>Models-->
+                <!--    </a>-->
+            </div>
+            <section id="hero">
+                <div class="teaser-wrap">
+                    <div class="fig-frame teaser-main-flex">
+                        <!-- Left: iteration progress grid (no Init / Reference columns) -->
+                        <div class="teaser-table-side">
+                            <div class="hero-controls">
+                                <div class="hero-control-row" role="radiogroup"
+                                    aria-label="Initialization type">
+                                    <span
+                                        class="hero-control-label">Setting</span>
+                                    <div id="heroInitButtons"
+                                        class="hero-control-options"></div>
+                                </div>
+                                <div class="hero-control-row" role="radiogroup"
+                                    aria-label="Dataset selector">
+                                    <span
+                                        class="hero-control-label">Dataset</span>
+                                    <div id="heroDatasetButtons"
+                                        class="hero-control-options"></div>
+                                </div>
+                                <div class="hero-control-row" role="radiogroup"
+                                    aria-label="Scene selector">
+                                    <span
+                                        class="hero-control-label">Scene</span>
+                                    <div id="heroSceneButtons"
+                                        class="hero-control-options"></div>
+                                </div>
+                                <span id="heroSceneMeta"
+                                    class="hero-scene-meta"></span>
+                            </div>
+                            <div class="hero-time-row">
+                                <span class="hero-control-label">Iterations
+                                    (log)</span>
+                                <div class="hero-time-slider-wrap">
+                                    <input id="heroTimeSlider"
+                                        class="hero-time-slider" type="range"
+                                        min="0" max="0" value="0"
+                                        step="1"
+                                        aria-label="Optimization time selector" />
+                                    <div id="heroTimeMarks"
+                                        class="hero-time-marks"
+                                        aria-hidden="true"></div>
+                                </div>
+                                <span id="heroTimeValue"
+                                    class="hero-time-value">t =
+                                    0</span>
+                            </div>
+                            <span
+                                style="font-family:var(--mono);font-size:13px;color:var(--muted2);text-align:center;display:block;margin-top:-4px;">
+                                <br />
+                                A single <strong
+                                    style="color:var(--accent);">Learn2Splat</strong>
+                                checkpoint serves both settings. We compare it to
+                                <strong style="color:#E69F00;">Adam</strong>
+                                (standard 3DGS optimization),
+                                <br />
+                                <strong style="color:#59A1CB;">G3R<sup>&#8902;</sup></strong>
+                                (our implementation of the G3R meta-training scheme)
+                                and, in the sparse setting, <strong
+                                    style="color:#009E73;">ReSplat</strong>.
+                                <br />
+                                <strong>Ctrl + scroll on an image to zoom in</strong>
+                                <br />
+                            </span>
+                            <div id="heroMethodGrid"
+                                class="hero-method-grid"></div>
+                            <div class="hero-extra-grid">
+                                <div class="hero-extra-item">
+                                    <span
+                                        class="hero-extra-label">Reference</span>
+                                    <div id="heroRefPreview"
+                                        class="iter-cell"></div>
+                                </div>
+                                <div class="hero-extra-curves">
+                                    <div id="heroCurvePreview"
+                                        class="hero-zoom-cell hero-zoom-wide"></div>
+                                    <div id="heroLegendDiv"
+                                        class="hero-zoom-cell hero-zoom-wide hero-legend-crop"><img
+                                            class="hero-legend-img"
+                                            src="static/images/figures/fig1_legend.svg"
+                                            alt="Legend" /></div>
+                                </div>
+                            </div>
+                            <p id="heroFootnote" class="hero-footnote" hidden><span
+                                    class="hero-footnote-mark">*</span>ReSplat is absent here: it relies on
+                                pixel-aligned Gaussians from the input views, so it cannot start from SfM
+                                points.</p>
+                        </div>
+                        <!-- Right: PSNR curves + legend (hidden — now inside tfoot) -->
+                        <div class="teaser-side-curves" style="display:none">
+                            <img src="static/images/figures/fig1_curves.png"
+                                alt="PSNR curves" />
+                            <img class="hero-legend-img"
+                                src="static/images/figures/fig1_legend.svg"
+                                alt="Legend" />
+                        </div>
+                    </div>
+
+                    <!-- bottom panel removed — content is now inside the table tfoot -->
+
+                    <p class="fig-cap">
+                        <strong>Learn2Splat</strong> is a learned optimizer for
+                        3DGS that stays above Adam throughout optimization and
+                        keeps improving over long horizons, where prior learned
+                        optimizers degrade. Prior learned optimizers rely on LR
+                        schedules or time encodings tied to a predefined
+                        iteration count. Learn2Splat maintains performance via a
+                        <strong>meta-training scheme</strong> (checkpoint buffer
+                        and optimizer rollout) and <strong>architectural
+                        modifications</strong>. A <strong>single
+                        model</strong>, meta-trained jointly on sparse-view
+                        (ReSplat init) and dense-view (SfM init) low-resolution
+                        DL3DV scenes, generalizes zero-shot to other datasets,
+                        resolutions and view counts. Each cell shows one target
+                        view at iteration <em>t</em>, labelled with that
+                        method's PSNR on the scene; the chart shows the PSNR
+                        averaged over all scenes of the dataset.
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <!-- ══ ABSTRACT ══ -->
+        <section id="abstract">
+            <div class="wrap reveal">
+                <span class="sec-tag">Abstract</span>
+                <div class="abstract">
+                    3D Gaussian Splatting (3DGS) optimization is most commonly
+                    performed using general-purpose first-order optimizers such
+                    as Adam or SGD. Although robust across scenes, they update
+                    each parameter independently without exploiting the
+                    structural and spatial relationships among Gaussians, which
+                    slows convergence. Recent works introduced learned
+                    optimizers that predict correlated updates informed by
+                    inter-parameter and inter-Gaussian dependencies. However,
+                    those are trained for a fixed number of optimization
+                    iterations and rely on manually scheduled learning rates to
+                    avoid degradation.
+                    <br><br>
+                    In this paper, we introduce <strong>Learn2Splat</strong>, a
+                    learned optimizer for 3DGS that avoids degradation over
+                    extended optimization horizons <em>without auxiliary
+                    mechanisms</em>. To enable this, we propose a meta-learning
+                    scheme that extends the optimization horizon via a
+                    <strong>checkpoint buffer</strong> and an <strong>optimizer
+                    rollout</strong> strategy, combined with an architecture
+                    that encodes gradient scale information in its latent
+                    states. Results show higher novel view synthesis quality at
+                    equal wall-clock time, while remaining stable over long
+                    horizons, with zero-shot generalization to unseen datasets
+                    and settings. To support our findings, we build a unified
+                    framework to train and evaluate learned and standard
+                    optimizers across sparse and dense view settings. Code and
+                    models will be released publicly.
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ METHOD ══ -->
+        <section id="method">
+            <div class="wrap reveal">
+                <span class="sec-tag">Method</span>
+                <h2>Meta-training scheme &amp; architecture</h2>
+                <p>Learn2Splat replaces Adam with a meta-learned network
+                    predicting per-Gaussian updates from
+                    Adam-normalized gradients and maintained latent states.
+                    The core architecture module is a kNN-based Point
+                    Transformer that captures spatial Gaussian
+                    relationships.</p>
+
+                <div style="margin-top:36px;">
+                    <div class="fig-frame">
+                        <img src="static/images/figures/fig2_approaches.svg"
+                            alt="3DGS optimization paradigms" />
+                    </div>
+                    <div class="fig-cap">
+                        <strong>3DGS Optimization Paradigms.</strong>
+                        <ul class="fig-cap-list">
+                            <li><strong>Per-scene optimization:</strong>
+                                iterative updates via loss evaluation,
+                                backpropagation, and standard optimizer rules.
+                            </li>
+                            <li><strong>Feed-forward networks (FFN):</strong>
+                                scene representation predicted in a single
+                                forward pass with a frozen pre-trained model.
+                            </li>
+                            <li><strong>Learned optimizers:</strong> iterative
+                                updates using a frozen meta-trained model
+                                that predicts steps from signals such as
+                                image-space errors or loss gradients.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top:32px;">
+                    <div class="fig-frame">
+                        <img
+                            src="static/images/figures/fig3_overview_larger_fonts.svg"
+                            alt="Learn2Splat meta-training and architecture" />
+                    </div>
+                    <div class="fig-cap">
+                        <strong>Meta-training and Architecture.</strong>
+                        <ul class="fig-cap-list">
+                            <li><strong>Meta iteration initialization</strong>.
+                                At each meta-iteration, a 3D scene is sampled
+                                and its Gaussians are initialized either from
+                                (1) SfM points or feed-forward (FFN) predictions
+                                at <em>t</em> = 0, or (2) an intermediate
+                                optimization state retrieved from a Checkpoint
+                                Buffer. The buffer stores partially optimized
+                                scenes together with their optimizer states,
+                                exposing the learned optimizer to both early-
+                                and late-stage optimization regimes. After the
+                                meta-iteration, the scene is further optimized
+                                using several frozen rollout steps before being
+                                pushed back into the buffer.
+
+                            </li>
+                            <li><strong>Meta iteration</strong>.
+                                Starting from the sampled scene state, the inner
+                                loop rolls out the learned optimizer for
+                                <em>&tau;</em> iterations. At each step,
+                                gradients of a reconstruction loss with respect
+                                to the Gaussian parameters are computed and
+                                passed to the learned optimizer to
+                                predict parameter updates. The outer meta-loop
+                                evaluates the updates
+                                quality and updates the learned optimizer
+                                parameters through meta-gradients.
+                            </li>
+                            <li><strong>Model architecture</strong>.
+                                The optimizer takes as input the current
+                                Gaussian parameters, Adam-normalized gradients,
+                                and per-Gaussian latent states. A kNN-based
+                                Point Transformer propagates information across
+                                neighboring Gaussians and predicts updated
+                                latent states, while a parallel State Scale MLP
+                                predicts state-scaling coefficients that
+                                preserve gradient magnitude information. The
+                                scaled latent states are then passed to an
+                                Update MLP, which predicts the final Gaussian
+                                parameter updates. Dashed lines denote
+                                concatenation and &odot; indicates
+                                element-wise scaling.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card-grid">
+                        <div class="card">
+                            <span class="card-tag"
+                                style="color:var(--accent);">Checkpoint
+                                Buffer</span>
+                            <h3>Diverse optimization states</h3>
+                            <p style="font-size:.86rem;">Stores intermediate
+                                scene states from previous meta-iterations.
+                                Exposes the optimizer to states from large early
+                                gradients through fine late-stage refinements
+                                without extending the computational graph.</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-tag"
+                                style="color:var(--sky);">Optimizer
+                                Rollout</span>
+                            <h3>Learning from rollouts</h3>
+                            <p style="font-size:.86rem;">Scenes are further
+                                optimized with a <em>frozen</em> snapshot before
+                                buffering.
+                                Rollout horizon grows from 1&rarr;50 steps over
+                                the first 10k meta-iterations,
+                                teaching the optimizer to recover from its own
+                                mistakes.</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-tag"
+                                style="color:var(--purple);">State Scale
+                                MLP</span>
+                            <h3>Gradient scale encoding</h3>
+                            <p style="font-size:.86rem;">Predicts per-Gaussian
+                                scaling coefficients from Adam-normalized
+                                gradients,
+                                restoring magnitude information suppressed by
+                                transformer normalization so updates
+                                decay naturally as the loss decreases.</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-tag"
+                                style="color:var(--green);">Zero-shot
+                                Generalization</span>
+                            <h3>Unseen datasets &amp; resolutions</h3>
+                            <p style="font-size:.86rem;">Trained on
+                                low-resolution DL3DV scenes only, a single
+                                Learn2Splat model generalizes zero-shot to new
+                                datasets, resolutions and view counts: in the
+                                sparse setting to high-resolution and 32-view
+                                DL3DV and to RealEstate10K, and in the dense
+                                setting to DTU, LLFF and Mip-NeRF360.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- ── TRAINING CONFIGURATIONS ── -->
+                    <div style="margin-top:32px;">
+                        <span class="sec-tag"
+                            style="margin-bottom:0px;">One Model, Two
+                            Training Configurations</span>
+                        <p style="margin-top:12px;">A single model is
+                            meta-trained jointly on two configurations of
+                            DL3DV, alternating between them across
+                            meta-iterations. Both use low-resolution images
+                            (256&times;448), with 8 context views at each inner
+                            iteration and a fixed set of 6 target views to
+                            evaluate the update; training runs for 150k
+                            meta-iterations on 4 NVIDIA A100 GPUs (about 3
+                            days). We compare it to dedicated per-configuration
+                            checkpoints in the <a href="#analysis">analysis</a>.</p>
+                        <div class="card-grid">
+
+                            <div class="card"
+                                style="border-left:3px solid var(--accent);">
+                                <span class="card-tag"
+                                    style="color:var(--accent);">Sparse
+                                    configuration</span>
+                                <h3>ReSplat initialization</h3>
+                                <p style="font-size:.9rem;">
+                                    A sparse-view, forward-facing setup with
+                                    <strong>ReSplat</strong> feed-forward
+                                    initialization. The same <strong>8 context
+                                    views</strong>, taken from a short window of
+                                    the scene video, are used at every inner
+                                    step, and latent states are initialized from
+                                    the feed-forward features.
+                                </p>
+                                <ul
+                                    style="font-size:.85rem;margin-top:10px;padding-left:1.4em;color:var(--muted);line-height:1.8;">
+                                    <li><strong>Init:</strong> ReSplat FFN (57K
+                                        primitives at train res.)</li>
+                                    <li><strong>Views:</strong> 8 fixed context
+                                        + 6 target views</li>
+                                    <li><strong>Resolution:</strong>
+                                        256&times;448</li>
+                                    <li><strong>Zero-shot to:</strong>
+                                        RealEstate10K, higher resolutions</li>
+                                </ul>
+                            </div>
+
+                            <div class="card"
+                                style="border-left:3px solid var(--accent);">
+                                <span class="card-tag"
+                                    style="color:var(--accent);">Dense
+                                    configuration</span>
+                                <h3>SfM initialization</h3>
+                                <p style="font-size:.9rem;">
+                                    A dense-view, large-baseline setup with
+                                    <strong>SfM point cloud</strong>
+                                    initialization and random latent states.
+                                    Each scene draws a pool of 64 views by
+                                    farthest-point sampling, and every inner
+                                    step samples <strong>8 context
+                                    views</strong> from it. Augmented by keeping
+                                    10&ndash;100% of the SfM points, with
+                                    COLMAP's black points removed.
+                                </p>
+                                <ul
+                                    style="font-size:.85rem;margin-top:10px;padding-left:1.4em;color:var(--muted);line-height:1.8;">
+                                    <li><strong>Init:</strong> SfM points
+                                        (random latent states)</li>
+                                    <li><strong>Views:</strong> 8 sampled via
+                                        furthest-point + 6 target views</li>
+                                    <li><strong>Resolution:</strong>
+                                        256&times;448</li>
+                                    <li><strong>Zero-shot to:</strong> DTU,
+                                        LLFF, Mip-NeRF360, higher
+                                        resolutions</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ RESULTS ══ -->
+        <section id="results">
+            <div class="wrap reveal">
+                <span class="sec-tag">Results</span>
+                <h2>Higher quality at equal wall-clock time</h2>
+                <p>A single Learn2Splat checkpoint is evaluated on eight
+                    benchmarks: four dense-view datasets from an SfM
+                    initialization and four sparse-view configurations from a
+                    ReSplat initialization. Every optimizer gets the same
+                    runtime, Adam's wall-clock time for 4000
+                    iterations, and runs as many of its own iterations
+                    as fit within it. All optimizers use spherical harmonics of
+                    degree 3 from the start, and adaptive density control is
+                    disabled to compare them at a fixed capacity.</p>
+
+                
+                
+                
+                <div class="speed-block" style="margin-top:40px;">
+                                                        <h3>Optimization trajectories on Mip-NeRF360</h3>
+                                                        <div class="fig-frame fig-stack">
+                                                            <img src="static/images/figures/speed_legend.svg"
+                                                                alt="Legend: L2S, G3R*, Adam, Adam-tuned, Adam peak" />
+                                                            <img src="static/images/figures/speed_mipnerf360.svg"
+                                                                alt="PSNR vs. wall-clock time and vs. iteration on Mip-NeRF360" />
+                                                        </div>
+                                                        <div class="fig-cap">
+                                                            <strong>Learn2Splat stays above Adam and remains stable
+                                                                over long horizons with higher final PSNR</strong>
+                                                            (Mip-NeRF360, dense views). <em>Left:</em> PSNR vs.
+                                                            wall-clock time, over the runtime of the table above.
+                                                            <em>Right:</em> PSNR vs. optimization iteration. Dots
+                                                            and labels mark where each run first reaches Adam's peak
+                                                            PSNR; the left panel lists each method's best PSNR.
+                                                            Although each Learn2Splat iteration is ~2&times; slower
+                                                            than an Adam step, it reaches every quality level of
+                                                            Adam in less wall-clock time.
+                                                        </div>
+                                                    </div>
+
+                                    <div class="an-item">
+                                        <button type="button" class="an-head" data-target="results-table"
+                                            aria-controls="results-table" aria-expanded="false">
+                                            <span class="an-title">Full results table</span>
+                                            <span class="an-teaser">LPIPS, SSIM, PSNR, iterations and peak memory for every benchmark, at the fixed runtime.</span>
+                                            <span class="an-open"><span class="an-more">See numbers</span><span class="an-less">Hide</span> <span class="an-chev" aria-hidden="true"></span></span>
+                                        </button>
+                                        <div class="an-panel" id="results-table" hidden>
+                                            <div class="table-card">
+                                                                <!-- sync:table:main-results -->
+<figure class="ltx-figure"><table class="ltx-table"><tr class="row-head rule-top"><td style="text-align:left">&nbsp;</td><td style="text-align:left"><small><em>Optimizer</em></small></td><td style="text-align:right" class="col-sep"><small> LPIPS↓</small></td><td style="text-align:right"><small> SSIM↑</small></td><td style="text-align:right"><small> PSNR↑</small></td><td style="text-align:right" class="col-sep"><small> PSNR<sub>T₄ₖ</sub>↑</small></td><td style="text-align:right"><small> Iters</small></td><td style="text-align:right" class="col-sep"><small> Mem [GB]↓</small></td></tr>
+<tr class="rule-mid"><td style="text-align:left" colspan="8"><strong>Dense-view, SfM init</strong></td></tr>
+<tr class="rule-mid"><td style="text-align:left" rowspan="3">DL3DV<br><small>~300 views<br>256×448</small></td><td style="text-align:left">G3R<sup>&#8902;</sup></td><td style="text-align:right" class="col-sep">0.218</td><td style="text-align:right">0.838</td><td style="text-align:right">25.81</td><td style="text-align:right" class="col-sep">25.12</td><td style="text-align:right">1608</td><td style="text-align:right" class="col-sep">1.6</td></tr>
+<tr><td style="text-align:left">Adam</td><td style="text-align:right" class="col-sep hl-second">0.185</td><td style="text-align:right" class="hl-second">0.879</td><td style="text-align:right" class="hl-second">27.78</td><td style="text-align:right" class="col-sep hl-second">27.78</td><td style="text-align:right">4000</td><td style="text-align:right" class="col-sep hl-first"><strong>1.5</strong></td></tr>
+<tr><td style="text-align:left">L2S</td><td style="text-align:right" class="col-sep hl-first"><strong>0.157</strong></td><td style="text-align:right" class="hl-first"><strong>0.896</strong></td><td style="text-align:right" class="hl-first"><strong>29.04</strong></td><td style="text-align:right" class="col-sep hl-first"><strong>29.04</strong></td><td style="text-align:right">1713</td><td style="text-align:right" class="col-sep hl-first"><strong>1.5</strong></td></tr>
+<tr class="rule-light"><td style="text-align:left" rowspan="3">DTU<br><small>~50 views<br>1162×1554</small></td><td style="text-align:left">G3R<sup>&#8902;</sup></td><td style="text-align:right" class="col-sep">0.350</td><td style="text-align:right">0.869</td><td style="text-align:right">27.19</td><td style="text-align:center" class="col-sep">DIV</td><td style="text-align:center">–</td><td style="text-align:right" class="col-sep">1.0</td></tr>
+<tr><td style="text-align:left">Adam</td><td style="text-align:right" class="col-sep hl-second">0.309</td><td style="text-align:right" class="hl-second">0.899</td><td style="text-align:right" class="hl-second">28.96</td><td style="text-align:right" class="col-sep hl-second">28.96</td><td style="text-align:right">4000</td><td style="text-align:right" class="col-sep">1.0</td></tr>
+<tr><td style="text-align:left">L2S</td><td style="text-align:right" class="col-sep hl-first"><strong>0.308</strong></td><td style="text-align:right" class="hl-first"><strong>0.900</strong></td><td style="text-align:right" class="hl-first"><strong>29.25</strong></td><td style="text-align:right" class="col-sep hl-first"><strong>29.25</strong></td><td style="text-align:right">1919</td><td style="text-align:right" class="col-sep">1.0</td></tr>
+<tr class="rule-light"><td style="text-align:left" rowspan="3">LLFF<br><small>~20–60 views<br>756×1008</small></td><td style="text-align:left">G3R<sup>&#8902;</sup></td><td style="text-align:right" class="col-sep">0.355</td><td style="text-align:right">0.723</td><td style="text-align:right">22.77</td><td style="text-align:right" class="col-sep">22.68</td><td style="text-align:right">1975</td><td style="text-align:right" class="col-sep">1.4</td></tr>
+<tr><td style="text-align:left">Adam</td><td style="text-align:right" class="col-sep hl-second">0.354</td><td style="text-align:right" class="hl-second">0.731</td><td style="text-align:right" class="hl-second">22.82</td><td style="text-align:right" class="col-sep hl-second">22.82</td><td style="text-align:right">4000</td><td style="text-align:right" class="col-sep hl-first"><strong>1.3</strong></td></tr>
+<tr><td style="text-align:left">L2S</td><td style="text-align:right" class="col-sep hl-first"><strong>0.303</strong></td><td style="text-align:right" class="hl-first"><strong>0.767</strong></td><td style="text-align:right" class="hl-first"><strong>24.56</strong></td><td style="text-align:right" class="col-sep hl-first"><strong>24.56</strong></td><td style="text-align:right">2855</td><td style="text-align:right" class="col-sep hl-first"><strong>1.3</strong></td></tr>
+<tr class="rule-light"><td style="text-align:left" rowspan="3">Mip360<br><small>100+ views<br>520×780</small></td><td style="text-align:left">G3R<sup>&#8902;</sup></td><td style="text-align:right" class="col-sep">0.423</td><td style="text-align:right">0.658</td><td style="text-align:right">23.62</td><td style="text-align:right" class="col-sep">22.68</td><td style="text-align:right">1441</td><td style="text-align:right" class="col-sep">4.4</td></tr>
+<tr><td style="text-align:left">Adam</td><td style="text-align:right" class="col-sep hl-second">0.372</td><td style="text-align:right" class="hl-first"><strong>0.715</strong></td><td style="text-align:right" class="hl-second">25.62</td><td style="text-align:right" class="col-sep hl-second">25.62</td><td style="text-align:right">4000</td><td style="text-align:right" class="col-sep hl-first"><strong>3.4</strong></td></tr>
+<tr><td style="text-align:left">L2S</td><td style="text-align:right" class="col-sep hl-first"><strong>0.367</strong></td><td style="text-align:right" class="hl-first"><strong>0.715</strong></td><td style="text-align:right" class="hl-first"><strong>25.75</strong></td><td style="text-align:right" class="col-sep hl-first"><strong>25.75</strong></td><td style="text-align:right">2013</td><td style="text-align:right" class="col-sep hl-second">3.5</td></tr>
+<tr class="rule-mid"><td style="text-align:left" colspan="8"><strong>Sparse-view, ReSplat init</strong></td></tr>
+<tr class="rule-mid"><td style="text-align:left" rowspan="4">DL3DV<br><small>8 views<br>256×448</small></td><td style="text-align:left">ReSplat</td><td style="text-align:right" class="col-sep">0.144</td><td style="text-align:right">0.854</td><td style="text-align:right">26.59</td><td style="text-align:right" class="col-sep">5.99</td><td style="text-align:right">1252</td><td style="text-align:right" class="col-sep">1.5</td></tr>
+<tr><td style="text-align:left">G3R<sup>&#8902;</sup></td><td style="text-align:right" class="col-sep hl-second">0.093</td><td style="text-align:right" class="hl-second">0.916</td><td style="text-align:right" class="hl-second">30.34</td><td style="text-align:right" class="col-sep">27.93</td><td style="text-align:right">1688</td><td style="text-align:right" class="col-sep hl-second">0.9</td></tr>
+<tr><td style="text-align:left">Adam</td><td style="text-align:right" class="col-sep">0.097</td><td style="text-align:right">0.909</td><td style="text-align:right">30.02</td><td style="text-align:right" class="col-sep hl-second">29.91</td><td style="text-align:right">4000</td><td style="text-align:right" class="col-sep hl-first"><strong>0.6</strong></td></tr>
+<tr><td style="text-align:left">L2S</td><td style="text-align:right" class="col-sep hl-first"><strong>0.090</strong></td><td style="text-align:right" class="hl-first"><strong>0.917</strong></td><td style="text-align:right" class="hl-first"><strong>30.53</strong></td><td style="text-align:right" class="col-sep hl-first"><strong>30.53</strong></td><td style="text-align:right">1924</td><td style="text-align:right" class="col-sep hl-second">0.9</td></tr>
+<tr class="rule-light"><td style="text-align:left" rowspan="4">DL3DV<br><small>8 views<br>512×960</small></td><td style="text-align:left">ReSplat</td><td style="text-align:right" class="col-sep">0.325</td><td style="text-align:right">0.722</td><td style="text-align:right">22.08</td><td style="text-align:center" class="col-sep">DIV</td><td style="text-align:center">–</td><td style="text-align:right" class="col-sep">20.2</td></tr>
+<tr><td style="text-align:left">G3R<sup>&#8902;</sup></td><td style="text-align:right" class="col-sep hl-second">0.192</td><td style="text-align:right" class="hl-first"><strong>0.846</strong></td><td style="text-align:right" class="hl-second">26.99</td><td style="text-align:right" class="col-sep">23.83</td><td style="text-align:right">1697</td><td style="text-align:right" class="col-sep hl-second">3.0</td></tr>
+<tr><td style="text-align:left">Adam</td><td style="text-align:right" class="col-sep">0.197</td><td style="text-align:right">0.837</td><td style="text-align:right">26.60</td><td style="text-align:right" class="col-sep hl-second">26.32</td><td style="text-align:right">4000</td><td style="text-align:right" class="col-sep hl-first"><strong>1.8</strong></td></tr>
+<tr><td style="text-align:left">L2S</td><td style="text-align:right" class="col-sep hl-first"><strong>0.185</strong></td><td style="text-align:right" class="hl-first"><strong>0.846</strong></td><td style="text-align:right" class="hl-first"><strong>27.16</strong></td><td style="text-align:right" class="col-sep hl-first"><strong>27.16</strong></td><td style="text-align:right">2063</td><td style="text-align:right" class="col-sep hl-second">3.0</td></tr>
+<tr class="rule-light"><td style="text-align:left" rowspan="4">DL3DV<br><small>32 views<br>256×448</small></td><td style="text-align:left">ReSplat</td><td style="text-align:right" class="col-sep">0.258</td><td style="text-align:right">0.743</td><td style="text-align:right">21.33</td><td style="text-align:right" class="col-sep">5.51</td><td style="text-align:right">1797</td><td style="text-align:right" class="col-sep">12.0</td></tr>
+<tr><td style="text-align:left">G3R<sup>&#8902;</sup></td><td style="text-align:right" class="col-sep hl-second">0.100</td><td style="text-align:right" class="hl-second">0.911</td><td style="text-align:right" class="hl-second">29.86</td><td style="text-align:right" class="col-sep">26.75</td><td style="text-align:right">2279</td><td style="text-align:right" class="col-sep hl-second">4.2</td></tr>
+<tr><td style="text-align:left">Adam</td><td style="text-align:right" class="col-sep">0.103</td><td style="text-align:right">0.904</td><td style="text-align:right">29.78</td><td style="text-align:right" class="col-sep hl-second">29.70</td><td style="text-align:right">4000</td><td style="text-align:right" class="col-sep hl-first"><strong>4.1</strong></td></tr>
+<tr><td style="text-align:left">L2S</td><td style="text-align:right" class="col-sep hl-first"><strong>0.095</strong></td><td style="text-align:right" class="hl-first"><strong>0.913</strong></td><td style="text-align:right" class="hl-first"><strong>30.26</strong></td><td style="text-align:right" class="col-sep hl-first"><strong>30.26</strong></td><td style="text-align:right">2334</td><td style="text-align:right" class="col-sep hl-second">4.2</td></tr>
+<tr class="rule-light"><td style="text-align:left" rowspan="4">RE10K<br><small>8 views<br>512×960</small></td><td style="text-align:left">ReSplat</td><td style="text-align:right" class="col-sep">0.338</td><td style="text-align:right">0.745</td><td style="text-align:right">19.90</td><td style="text-align:center" class="col-sep">DIV</td><td style="text-align:center">–</td><td style="text-align:right" class="col-sep">20.2</td></tr>
+<tr><td style="text-align:left">G3R<sup>&#8902;</sup></td><td style="text-align:right" class="col-sep hl-first"><strong>0.214</strong></td><td style="text-align:right" class="hl-first"><strong>0.855</strong></td><td style="text-align:right" class="hl-second">26.01</td><td style="text-align:center" class="col-sep">DIV</td><td style="text-align:center">–</td><td style="text-align:right" class="col-sep hl-second">3.0</td></tr>
+<tr><td style="text-align:left">Adam</td><td style="text-align:right" class="col-sep">0.223</td><td style="text-align:right">0.844</td><td style="text-align:right">25.57</td><td style="text-align:right" class="col-sep hl-second">25.26</td><td style="text-align:right">4000</td><td style="text-align:right" class="col-sep hl-first"><strong>1.8</strong></td></tr>
+<tr data-bottom="1"><td style="text-align:left">L2S</td><td style="text-align:right" class="col-sep hl-first"><strong>0.214</strong></td><td style="text-align:right" class="hl-second">0.852</td><td style="text-align:right" class="hl-first"><strong>26.08</strong></td><td style="text-align:right" class="col-sep hl-first"><strong>26.08</strong></td><td style="text-align:right">1818</td><td style="text-align:right" class="col-sep hl-second">3.0</td></tr></table><figcaption class="ltx-caption"><strong>L2S reaches the best PSNR and keeps improving until the end of the run.</strong> Metrics are reported at the best-PSNR iteration within a fixed runtime T₄ₖ, which we set to Adam's runtime of 4000 iterations. PSNR<sub>T₄ₖ</sub> is taken at the last iteration of each method inside this runtime (Iters). DIV marks a run whose Gaussian parameters diverged to non-finite values, with no quality to report beyond that point. Only L2S keeps improving to the end on every benchmark, while G3R<sup>&#8902;</sup> loses up to 3.2 dB, ReSplat over 15 dB, and Adam stays within 0.4 dB. <span class="hl-first"><strong>Best</strong></span> and <span class="hl-second">second best</span> values are highlighted.</figcaption></figure>
+<!-- /sync:table:main-results -->
+                                                            </div>
+                                        </div>
+                </div>
+
+                <div class="an-item">
+                                    <button type="button" class="an-head" data-target="results-timing"
+                                        aria-controls="results-timing" aria-expanded="false">
+                                        <span class="an-title">Optimization trajectories on all benchmarks</span>
+                                        <span class="an-teaser">PSNR against elapsed optimization time, on all
+                                            eight benchmarks of the table above.</span>
+                                        <span class="an-open"><span class="an-more">See all benchmarks</span><span class="an-less">Hide</span> <span class="an-chev" aria-hidden="true"></span></span>
+                                    </button>
+                                    <div class="an-panel" id="results-timing" hidden>
+                                        <!-- sync:timing -->
+<div class="timing-toggle"><button type="button" class="timing-pill is-active" data-setting="dense">Dense views · SfM init</button><button type="button" class="timing-pill" data-setting="sparse">Sparse views · ReSplat init</button></div><div class="timing-set" data-setting="dense"><img class="timing-legend" src="static/images/figures/timing/dense/legend.svg" alt="legend" style="width:838px"/><div class="timing-grid"><figure class="timing-fig"><img src="static/images/figures/timing/dense/dl3dv.svg" alt="PSNR against wall-clock time on DL3DV"/><figcaption><strong>DL3DV</strong> ~300 views · 256×448</figcaption></figure><figure class="timing-fig"><img src="static/images/figures/timing/dense/dtu.svg" alt="PSNR against wall-clock time on DTU"/><figcaption><strong>DTU</strong> ~50 views · 1162×1554</figcaption></figure><figure class="timing-fig"><img src="static/images/figures/timing/dense/llff.svg" alt="PSNR against wall-clock time on LLFF"/><figcaption><strong>LLFF</strong> ~20–60 views · 756×1008</figcaption></figure><figure class="timing-fig"><img src="static/images/figures/timing/dense/mipnerf360.svg" alt="PSNR against wall-clock time on Mip-NeRF360"/><figcaption><strong>Mip-NeRF360</strong> 100+ views · 520×780</figcaption></figure></div><p class="fig-cap">Optimization against wall-clock time, dense setting. PSNR averaged across scenes, plotted against elapsed optimization time. Dots and labels mark where each run reaches Adam&#x27;s peak PSNR, and each panel lists the methods&#x27; best PSNR. A cross marks where a run&#x27;s Gaussian parameters diverged to non-finite values. L2S reaches every quality level faster than both Adam variants and ends higher, except on DTU, where Adam-tuned ends marginally above it.</p></div><div class="timing-set" data-setting="sparse" hidden><img class="timing-legend" src="static/images/figures/timing/sparse/legend.svg" alt="legend" style="width:1004px"/><div class="timing-grid"><figure class="timing-fig"><img src="static/images/figures/timing/sparse/dl3dv_8low.svg" alt="PSNR against wall-clock time on DL3DV"/><figcaption><strong>DL3DV</strong> 8 views · 256×448</figcaption></figure><figure class="timing-fig"><img src="static/images/figures/timing/sparse/dl3dv_32low.svg" alt="PSNR against wall-clock time on DL3DV"/><figcaption><strong>DL3DV</strong> 32 views · 256×448</figcaption></figure><figure class="timing-fig"><img src="static/images/figures/timing/sparse/dl3dv_8high.svg" alt="PSNR against wall-clock time on DL3DV"/><figcaption><strong>DL3DV</strong> 8 views · 512×960</figcaption></figure><figure class="timing-fig"><img src="static/images/figures/timing/sparse/re10k.svg" alt="PSNR against wall-clock time on RealEstate10K"/><figcaption><strong>RealEstate10K</strong> 8 views · 512×960</figcaption></figure></div><p class="fig-cap">Optimization against wall-clock time, sparse setting. PSNR averaged across scenes, plotted against elapsed optimization time. Dots and labels mark where each run reaches Adam&#x27;s peak PSNR, and each panel lists the methods&#x27; best PSNR. A cross marks where a run&#x27;s Gaussian parameters diverged to non-finite values. L2S reaches every quality level faster than both Adam variants and ends higher, despite a more expensive update.</p></div>
+<!-- /sync:timing -->
+                                    </div>
+                                </div>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <span class="card-tag" style="color:var(--accent);">Dense
+                            views &middot; SfM init</span>
+                        <h3>DL3DV, DTU, LLFF, Mip-NeRF360</h3>
+                        <p style="font-size:.9rem;">On 140 DL3DV scenes
+                            (in-domain) and 15 DTU, 8 LLFF and 9 Mip-NeRF360
+                            scenes (zero-shot), Learn2Splat improves over Adam by
+                            0.1&ndash;1.7&nbsp;dB within the fixed runtime.
+                            G3R<sup>&#8902;</sup> peaks within 100 steps, as it
+                            is tuned for early performance, then degrades,
+                            ending 1.8&ndash;3.2&nbsp;dB below Learn2Splat and
+                            diverging on DTU.</p>
+                    </div>
+                    <div class="card">
+                        <span class="card-tag" style="color:var(--accent);">Sparse
+                            views &middot; ReSplat init</span>
+                        <h3>DL3DV (8 / 32 views), RealEstate10K</h3>
+                        <p style="font-size:.9rem;">On 140 low- and
+                            high-resolution DL3DV scenes and 72 RealEstate10K
+                            scenes, Learn2Splat stays above Adam throughout and
+                            improves by close to 0.5&nbsp;dB, while Adam drops
+                            0.1&ndash;0.3&nbsp;dB below its own peak.
+                            G3R<sup>&#8902;</sup> ends 2.6&ndash;3.5&nbsp;dB
+                            below on DL3DV and diverges on RealEstate10K; ReSplat
+                            improves only for the first ~10 iterations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ MORE RESULTS ══ -->
+        <section id="more-results">
+            <div class="wrap reveal">
+                <span class="sec-tag">More Results</span>
+                <h2>Second-order optimization and densification</h2>
+
+                <div class="an-item">
+                    <button type="button" class="an-head" data-target="an-secondorder"
+                        aria-controls="an-secondorder" aria-expanded="false">
+                        <span class="an-title">Comparison to second-order optimization</span>
+                        <span class="an-teaser">Against LMRS and 3DGS-LM at equal runtime, at half of LMRS's memory.</span>
+                        <span class="an-open"><span class="an-more">Show more</span><span class="an-less">Show less</span> <span class="an-chev" aria-hidden="true"></span></span>
+                    </button>
+                    <div class="an-panel" id="an-secondorder" hidden>
+                        <p>On the nine Mip-NeRF360 scenes, in the regime of LMRS (SH
+                        degree 0, L<sub>2</sub> inner loss, 16 views),
+                        Learn2Splat attains the best PSNR, SSIM and LPIPS within
+                        the same runtime, over 0.3&nbsp;dB above both Adam and
+                        LMRS, at half of LMRS's memory. Both the L<sub>2</sub>
+                        loss and the 16-view batch are out of distribution for
+                        our model. 3DGS-LM runs out of memory from the SfM
+                        initialization on indoor scenes, and warm-started from
+                        2000 Adam iterations it fits only 13 refinement steps,
+                        ending 0.3&nbsp;dB below Adam at equal time.</p>
+                    <div class="table-card">
+                        <!-- sync:table:lmrs -->
+<figure class="ltx-figure"><table class="ltx-table"><tr class="row-head rule-top"><td style="text-align:left"><small><em>Optimizer</em></small></td><td style="text-align:right" class="col-sep"><small> LPIPS ↓</small></td><td style="text-align:right"><small> SSIM ↑</small></td><td style="text-align:right"><small> PSNR ↑</small></td><td style="text-align:right" class="col-sep"><small> Iters</small></td><td style="text-align:right" class="col-sep"><small> Mem [GB] ↓</small></td></tr>
+<tr class="rule-mid"><td style="text-align:left" colspan="6"><em>Second-order</em></td></tr>
+<tr class="rule-light"><td style="text-align:left">LMRS </td><td style="text-align:right" class="col-sep hl-second">0.443</td><td style="text-align:right" class="hl-second">0.677</td><td style="text-align:right" class="hl-second">25.43</td><td style="text-align:right" class="col-sep">335</td><td style="text-align:right" class="col-sep">14.2</td></tr>
+<tr><td style="text-align:left">3DGS-LM <sup>SfM init</sup></td><td style="text-align:center" colspan="5" class="col-sep"> <em>OOM</em> on 4/9 scenes </td></tr>
+<tr><td style="text-align:left">3DGS-LM <sup>Adam-2k init</sup></td><td style="text-align:right" class="col-sep">0.462</td><td style="text-align:right">0.664</td><td style="text-align:right">25.09</td><td style="text-align:right" class="col-sep">2k+13</td><td style="text-align:right" class="col-sep">33.9</td></tr>
+<tr class="rule-med row-space"><td style="text-align:left" colspan="6"><em>First-order</em></td></tr>
+<tr class="rule-light"><td style="text-align:left">Adam</td><td style="text-align:right" class="col-sep">0.447</td><td style="text-align:right">0.674</td><td style="text-align:right">25.41</td><td style="text-align:right" class="col-sep">4000</td><td style="text-align:right" class="col-sep hl-first"><strong>6.3</strong></td></tr>
+<tr data-bottom="1"><td style="text-align:left">L2S-SH<sub>0</sub></td><td style="text-align:right" class="col-sep hl-first"><strong>0.432</strong></td><td style="text-align:right" class="hl-first"><strong>0.682</strong></td><td style="text-align:right" class="hl-first"><strong>25.77</strong></td><td style="text-align:right" class="col-sep">2000</td><td style="text-align:right" class="col-sep hl-second">6.5</td></tr></table><figcaption class="ltx-caption"><strong>L2S outperforms the second-order methods on every metric at equal runtime.</strong> Mip-NeRF360 scenes in the SH<sub>0</sub> and L<sub>2</sub>-loss regime of LMRS. For 3DGS-LM, <em>Iters</em> counts the refinement steps taken on top of its 2k-Adam warm start. <span class="hl-first"><strong>Best</strong></span> and <span class="hl-second">second best</span> values are highlighted.</figcaption></figure>
+<!-- /sync:table:lmrs -->
+                    </div>
+                    <div class="fig-frame fig-stack" style="margin-top:18px;">
+                        <img src="static/images/figures/lmrs_legend.svg" alt="Legend" />
+                        <div class="fig-pair">
+                            <img src="static/images/figures/lmrs_all9.svg"
+                                alt="PSNR vs. time on all nine Mip-NeRF360 scenes" />
+                            <img src="static/images/figures/lmrs_outdoor.svg"
+                                alt="PSNR vs. time on the outdoor Mip-NeRF360 scenes" />
+                        </div>
+                    </div>
+                    <div class="fig-cap">PSNR against wall-clock time for the
+                        second-order comparison, on all nine Mip-NeRF360 scenes
+                        (left) and on the outdoor scenes (right).</div>
+                    </div>
+                </div>
+                <div class="an-item">
+                    <button type="button" class="an-head" data-target="an-mcmc"
+                        aria-controls="an-mcmc" aria-expanded="false">
+                        <span class="an-title">Densification (3DGS-MCMC)</span>
+                        <span class="an-teaser">With MCMC densification enabled both optimizers gain, and ours stays ahead.</span>
+                        <span class="an-open"><span class="an-more">Show more</span><span class="an-less">Show less</span> <span class="an-chev" aria-hidden="true"></span></span>
+                    </button>
+                    <div class="an-panel" id="an-mcmc" hidden>
+                        <p>The main comparison disables adaptive density control. With
+                        the 3DGS-MCMC densification scheme on Mip-NeRF360, both
+                        optimizers benefit, and Learn2Splat stays ahead of Adam
+                        while gaining more from densification.</p>
+                    <div class="table-card">
+                        <!-- sync:table:mcmc -->
+<figure class="ltx-figure"><table class="ltx-table"><tr class="row-head rule-top"><td style="text-align:left">&nbsp;</td><td style="text-align:center">&nbsp;</td><td style="text-align:center" colspan="2" class="col-sep">PSNR ↑</td></tr>
+<tr class="row-head"><td style="text-align:left">MCMC</td><td style="text-align:center">#G</td><td style="text-align:center" class="col-sep cmid-top dcol"><span class="dwrap"><span class="dbase">Adam</span><span class="dsub"></span></span></td><td style="text-align:center" class="cmid-top dcol"><span class="dwrap"><span class="dbase">L2S</span><span class="dsub"></span></span></td></tr>
+<tr class="rule-mid"><td style="text-align:left">w/o</td><td style="text-align:center">115k</td><td style="text-align:right" class="col-sep dcol"><span class="dwrap"><span class="dbase">25.02</span><span class="dsub"></span></span></td><td style="text-align:right" class="hl-second dcol"><span class="dwrap"><span class="dbase">25.80</span><span class="dsub"></span></span></td></tr>
+<tr data-bottom="1"><td style="text-align:left">w/</td><td style="text-align:center">178k</td><td style="text-align:right" class="col-sep dcol"><span class="dwrap"><span class="dbase">25.12</span><span class="dsub"><sub><span class="ltx-note">+0.10</span></sub></span></span></td><td style="text-align:right" class="hl-first dcol"><span class="dwrap"><span class="dbase"><strong>25.99</strong></span><span class="dsub"><sub><span class="ltx-note">+0.19</span></sub></span></span></td></tr></table><figcaption class="ltx-caption"><strong>Integration with the 3DGS-MCMC densification scheme</strong> on Mip-NeRF360.
+Subscripts give the gain from enabling MCMC over the corresponding w/o-MCMC row;
+#G is the resulting Gaussian count.
+Both optimizers benefit from the MCMC scheme, and L2S stays ahead of Adam
+with densification enabled.
+<span class="hl-first"><strong>Best</strong></span> and <span class="hl-second">second best</span> PSNR are highlighted.</figcaption></figure>
+<!-- /sync:table:mcmc -->
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ ANALYSIS ══ -->
+        <section id="analysis">
+            <div class="wrap reveal">
+                <span class="sec-tag">Analysis</span>
+
+                <div class="an-item">
+                    <button type="button" class="an-head" data-target="an-ablation"
+                        aria-controls="an-ablation" aria-expanded="false">
+                        <span class="an-title">What removes the degradation</span>
+                        <span class="an-teaser">Each meta-training component added in turn, from ReSplat's inputs to our losses.</span>
+                        <span class="an-open"><span class="an-more">Show more</span><span class="an-less">Show less</span> <span class="an-chev" aria-hidden="true"></span></span>
+                    </button>
+                    <div class="an-panel" id="an-ablation" hidden>
+                        <p>Replacing ReSplat's per-pixel error inputs with G3R or Adam
+                        gradients raises the peak from 26.6 to 30.0&nbsp;dB but
+                        does not prevent degradation. Adding our meta-training
+                        components one at a time on top of the Adam-gradient
+                        variant keeps the peak and further reduces the
+                        degradation: checkpoint buffer and optimizer rollout
+                        stay within 0.7&nbsp;dB of the peak, the predicted scale
+                        factors within 0.13&nbsp;dB, and our losses remove it
+                        entirely, with PSNR still rising at 2000
+                        iterations.</p>
+                    <div class="fig-frame">
+                        <img src="static/images/figures/ablation.svg"
+                            alt="Ablation study: PSNR over 2000 iterations for each added component" />
+                    </div>
+                    <div class="fig-cap"><strong>Ablation study in sparse-view
+                            training.</strong> The shaded region is magnified on
+                        the right. A leading &ldquo;+&rdquo; marks a component
+                        added on top of the previous variant, while rows without
+                        one are single changes to ReSplat.</div>
+                    </div>
+                </div>
+                <div class="an-item">
+                    <button type="button" class="an-head" data-target="an-dedicated"
+                        aria-controls="an-dedicated" aria-expanded="false">
+                        <span class="an-title">Dedicated vs. unified checkpoint</span>
+                        <span class="an-teaser">One jointly-trained model against two per-regime checkpoints: within 0.2&nbsp;dB on every benchmark.</span>
+                        <span class="an-open"><span class="an-more">Show more</span><span class="an-less">Show less</span> <span class="an-chev" aria-hidden="true"></span></span>
+                    </button>
+                    <div class="an-panel" id="an-dedicated" hidden>
+                        <p>The results above use a single model meta-trained jointly on
+                        the sparse and dense configurations, alternating between
+                        the two across meta-iterations. Against two
+                        <em>dedicated</em> checkpoints, each meta-trained on one
+                        configuration only, the unified model is within
+                        0.2&nbsp;dB on every benchmark. Applying a dedicated checkpoint
+                        outside its training regime degrades quality, though the
+                        two directions are not symmetric: the dense one loses
+                        0.13&ndash;0.36&nbsp;dB on the sparse benchmarks, while
+                        the sparse one loses 7.4&ndash;11.9&nbsp;dB on the dense
+                        ones.</p>
+                    <div class="table-card">
+                        <!-- sync:table:dedicated-vs-unified -->
+<figure class="ltx-figure"><table class="ltx-table"><tr class="row-head rule-top"><td style="text-align:left">&nbsp;</td><td style="text-align:left">&nbsp;</td><td style="text-align:right" class="col-sep">L2S<sup>S</sup></td><td style="text-align:right">L2S<sup>D</sup></td><td style="text-align:right">L2S</td></tr>
+<tr class="rule-mid"><td style="text-align:left" rowspan="4">Dense</td><td style="text-align:left">DL3DV</td><td style="text-align:right" class="col-sep">17.03</td><td style="text-align:right">28.92<sup>*</sup></td><td style="text-align:right" class="hl-first"><strong>29.07</strong></td></tr>
+<tr><td style="text-align:left">DTU</td><td style="text-align:right" class="col-sep">21.61</td><td style="text-align:right">29.10<sup>*</sup></td><td style="text-align:right" class="hl-first"><strong>29.26</strong></td></tr>
+<tr><td style="text-align:left">LLFF</td><td style="text-align:right" class="col-sep">14.21</td><td style="text-align:right">24.33<sup>*</sup></td><td style="text-align:right" class="hl-first"><strong>24.46</strong></td></tr>
+<tr><td style="text-align:left">Mip360</td><td style="text-align:right" class="col-sep">18.26</td><td style="text-align:right">25.67<sup>*</sup></td><td style="text-align:right" class="hl-first"><strong>25.78</strong></td></tr>
+<tr class="rule-mid"><td style="text-align:left" rowspan="4">Sparse</td><td style="text-align:left">DL3DV 8, low-res</td><td style="text-align:right" class="col-sep hl-first"><strong>30.60</strong><sup>*</sup></td><td style="text-align:right">30.24</td><td style="text-align:right">30.53</td></tr>
+<tr><td style="text-align:left">DL3DV 8, hi-res</td><td style="text-align:right" class="col-sep">27.10<sup>*</sup></td><td style="text-align:right">26.90</td><td style="text-align:right" class="hl-first"><strong>27.17</strong></td></tr>
+<tr><td style="text-align:left">DL3DV 32, low-res</td><td style="text-align:right" class="col-sep">30.18<sup>*</sup></td><td style="text-align:right">30.05</td><td style="text-align:right" class="hl-first"><strong>30.25</strong></td></tr>
+<tr data-bottom="1"><td style="text-align:left">RE10K 8</td><td style="text-align:right" class="col-sep hl-first"><strong>26.28</strong><sup>*</sup></td><td style="text-align:right">26.11</td><td style="text-align:right">26.08</td></tr></table><figcaption class="ltx-caption"><strong>Dedicated vs. unified checkpoint.</strong> Best PSNR over a 2000-iteration trajectory of the single jointly-trained L2S model against the two dedicated per-regime checkpoints, L2S<sup>S</sup> and L2S<sup>D</sup>, each meta-trained on the sparse or dense configuration. <sup>*</sup> marks the dedicated checkpoint evaluated inside its own training regime. We highlight the <span class="hl-first"><strong>best</strong></span> value per row.
+The unified model matches or exceeds the dedicated dense checkpoint on every dense benchmark and stays within 0.2 dB of the dedicated sparse checkpoint.</figcaption></figure>
+<!-- /sync:table:dedicated-vs-unified -->
+                    </div>
+                    </div>
+                </div>
+                <div class="an-item">
+                    <button type="button" class="an-head" data-target="an-adam"
+                        aria-controls="an-adam" aria-expanded="false">
+                        <span class="an-title">Adam vs. Adam<sup>tuned</sup></span>
+                        <span class="an-teaser">Grid-searched learning rates help every sparse benchmark and hurt most dense ones.</span>
+                        <span class="an-open"><span class="an-more">Show more</span><span class="an-less">Show less</span> <span class="an-chev" aria-hidden="true"></span></span>
+                    </button>
+                    <div class="an-panel" id="an-adam" hidden>
+                        <p>Learning rates grid-searched on sparse DL3DV improve every
+                        sparse benchmark but degrade most dense ones, so no
+                        single Adam configuration is best across regimes and the
+                        main results use default Adam. Learn2Splat outperforms
+                        default Adam everywhere, and the tuned Adam on all but
+                        DTU.</p>
+                    <div class="table-card">
+                        <!-- sync:table:adam-vs-tuned -->
+<figure class="ltx-figure"><table class="ltx-table"><tr class="row-head rule-top"><td style="text-align:left">&nbsp;</td><td style="text-align:left">&nbsp;</td><td style="text-align:right" class="col-sep">Adam</td><td style="text-align:right">Adam<sup>tuned</sup></td><td style="text-align:right">L2S</td></tr>
+<tr class="rule-mid"><td style="text-align:left" rowspan="4">Dense</td><td style="text-align:left">DL3DV</td><td style="text-align:right" class="col-sep hl-second">27.78</td><td style="text-align:right">27.18</td><td style="text-align:right" class="hl-first"><strong>29.04</strong></td></tr>
+<tr><td style="text-align:left">DTU</td><td style="text-align:right" class="col-sep">28.96</td><td style="text-align:right" class="hl-first"><strong>29.31</strong></td><td style="text-align:right" class="hl-second">29.25</td></tr>
+<tr><td style="text-align:left">LLFF</td><td style="text-align:right" class="col-sep hl-second">22.82</td><td style="text-align:right">20.98</td><td style="text-align:right" class="hl-first"><strong>24.56</strong></td></tr>
+<tr><td style="text-align:left">Mip360</td><td style="text-align:right" class="col-sep hl-second">25.62</td><td style="text-align:right">24.42</td><td style="text-align:right" class="hl-first"><strong>25.75</strong></td></tr>
+<tr class="rule-mid"><td style="text-align:left" rowspan="4">Sparse</td><td style="text-align:left">DL3DV 8, low-res</td><td style="text-align:right" class="col-sep">30.02</td><td style="text-align:right" class="hl-second">30.29</td><td style="text-align:right" class="hl-first"><strong>30.53</strong></td></tr>
+<tr><td style="text-align:left">DL3DV 8, hi-res</td><td style="text-align:right" class="col-sep">26.60</td><td style="text-align:right" class="hl-second">26.72</td><td style="text-align:right" class="hl-first"><strong>27.16</strong></td></tr>
+<tr><td style="text-align:left">DL3DV 32, low-res</td><td style="text-align:right" class="col-sep">29.78</td><td style="text-align:right" class="hl-second">30.02</td><td style="text-align:right" class="hl-first"><strong>30.26</strong></td></tr>
+<tr data-bottom="1"><td style="text-align:left">RE10K 8</td><td style="text-align:right" class="col-sep">25.57</td><td style="text-align:right" class="hl-second">26.02</td><td style="text-align:right" class="hl-first"><strong>26.08</strong></td></tr></table><figcaption class="ltx-caption"><strong>Adam vs. Adam<sup>tuned</sup>.</strong> Best PSNR within the runtime of Adam with default learning rates (Adam), Adam with learning rates grid-searched on sparse DL3DV scenes (Adam<sup>tuned</sup>), and our learned optimizer (L2S).
+The tuned learning rates improve every sparse setting but degrade most dense ones (DTU excepted); as no single Adam configuration is best across regimes, the main results use the default Adam. L2S outperforms Adam on every benchmark, and Adam<sup>tuned</sup> on all but DTU, where Adam<sup>tuned</sup> is ahead by 0.06 dB.
+<span class="hl-first"><strong>Best</strong></span> and <span class="hl-second">second best</span> values are highlighted.</figcaption></figure>
+<!-- /sync:table:adam-vs-tuned -->
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ VIDEO ══ -->
+        <section id="video">
+            <div class="wrap reveal">
+                <span class="sec-tag">Video</span>
+                <h2>Optimization videos</h2>
+                <ul class="video-settings">
+                    <li><strong>Sparse</strong> &mdash; DL3DV at 512&times;960 from a
+                        ReSplat initialization</li>
+                    <li><strong>Dense</strong> &mdash; Mip-NeRF360 and DTU from an SfM
+                        initialization</li>
+                </ul>
+                <p class="video-claim">Learn2Splat reaches higher PSNR early and keeps
+                    improving to the end, while G3R<sup>&#8902;</sup> and ReSplat
+                    degrade.</p>
+
+                <div class="video-teaser" id="videoTeaser" style="margin-top:28px;">
+                    <div class="video-teaser-toolbar">
+                        <span class="video-teaser-kicker">Interactive
+                            teaser</span>
+                        <div class="video-teaser-scenes" id="videoTeaserScenes"
+                            role="radiogroup"
+                            aria-label="Teaser scene selector"></div>
+                    </div>
+                    <p class="video-teaser-note">Drag the split lines to compare the
+                        methods in one view; click to freeze them.</p>
+                    <div class="video-teaser-canvas-wrap">
+                        <canvas id="videoTeaserCanvas" width="960" height="512"
+                            aria-label="Four-way interactive video comparison"
+                            role="img"></canvas>
+                    </div>
+                    <div class="video-teaser-controls">
+                        <button type="button" id="videoTeaserPlayPause"
+                            class="video-teaser-playpause" aria-label="Pause">&#9646;&#9646;</button>
+                        <input id="videoTeaserScrub" class="video-teaser-scrub" type="range"
+                            min="0" max="1000" value="0" step="1"
+                            aria-label="Playback position" />
+                        <span id="videoTeaserTime" class="video-teaser-time"></span>
+                    </div>
+                    <div class="video-teaser-sources" aria-hidden="true">
+                        <video id="vidLT" muted loop playsinline
+                            preload="auto"></video>
+                        <video id="vidRT" muted loop playsinline
+                            preload="auto"></video>
+                        <video id="vidLB" muted loop playsinline
+                            preload="auto"></video>
+                        <video id="vidRB" muted loop playsinline
+                            preload="auto"></video>
+                    </div>
+                </div>
+                <p class="video-footnote"><span class="hero-footnote-mark">*</span>ReSplat is
+                    absent from the dense scenes: it relies on pixel-aligned Gaussians from the
+                    input views, so it cannot start from SfM points.</p>
+            </div>
+        </section>
+
+        <!-- ══ CITATION ══ -->
+        <section id="citation">
+            <div class="wrap reveal">
+                <span class="sec-tag">Citation</span>
+                <h2>BibTeX</h2>
+                <p>If you find this work useful, please cite:</p>
+                <div class="cite-box">
+                    <button class="copy-btn" onclick="doCopy()">Copy</button>
+                    <pre id="bib">@article{pearl2026learn2splat,
+  title   = {Learn2Splat: Extending the Horizon of Learned 3DGS Optimization},
+  author  = {Pearl, Naama and Esposito, Stefano and Xu, Haofei and Peleg, Amit and Gschossmann, Patricia and
+             Porzi, Lorenzo and Kontschieder, Peter and Pons-Moll, Gerard and Geiger, Andreas},
+  journal = {arXiv preprint arXiv:2605.15760},
+  year    = {2026}
+}</pre>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div style="max-width:960px;margin:0 auto;">
+                Learn2Splat &nbsp;&middot;&nbsp;
+                Video visualization is inspired by <a
+                    href="https://dorverbin.github.io/refnerf/">Ref-NeRF</a>
+                &nbsp;&middot;&nbsp; <a href="#"
+                    onclick="scrollTo(0,0);return false;">Top &uarr;</a>
+            </div>
+        </footer>
+
+        <script src="static/hero-data.js"></script>
+        <script>
+    /* Scroll reveal */
+    const rv = new IntersectionObserver(es => es.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.classList.add('on');
+            rv.unobserve(e.target);
+        }
+    }), {threshold: .07});
+    document.querySelectorAll('.reveal').forEach(el => rv.observe(el));
+
+    /* Ablation bars animate on scroll */
+    const ao = new IntersectionObserver(es => {
+        es.forEach(e => {
+            if (e.isIntersecting) {
+                document.querySelectorAll('.abl-fill').forEach(b => b.style.width = b.dataset.w + '%');
+                ao.disconnect();
+            }
+        });
+    }, {threshold: .3});
+    const ab = document.getElementById('ablBars');
+    if (ab) ao.observe(ab);
+
+    /* Copy BibTeX */
+    function doCopy() {
+        navigator.clipboard.writeText(document.getElementById('bib').textContent);
+        const b = document.querySelector('.copy-btn');
+        b.textContent = 'Copied!';
+        b.style.color = 'var(--accent)';
+        setTimeout(() => {
+            b.textContent = 'Copy';
+            b.style.color = '';
+        }, 2200);
+    }
+
+    /* Nav: mark the link of the section currently under the header bar */
+    (function () {
+        const links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
+        const sections = links.map(a => document.querySelector(a.getAttribute('href')));
+        if (!links.length) return;
+        let ticking = false;
+
+        function update() {
+            ticking = false;
+            // Probe a third of the way down the viewport. At the sticky bar a section only
+            // became current once its top had scrolled past, so links lit up a screen late; at
+            // the exact middle a section shorter than half a screen (More Results, collapsed)
+            // could never win, and its neighbour took the highlight instead.
+            const y = window.scrollY + window.innerHeight / 3;
+            let current = -1;
+            sections.forEach(function (s, i) {
+                if (s && s.offsetTop <= y) current = i;
+            });
+            // at the very bottom the last section may be too short to reach the line
+            if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
+                current = links.length - 1;
+            }
+            links.forEach(function (a, i) { a.classList.toggle('is-current', i === current); });
+        }
+
+        window.addEventListener('scroll', function () {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(update);
+        }, {passive: true});
+        window.addEventListener('resize', update, {passive: true});
+        update();
+    })();
+
+    /* Wall-clock figures: the dense/sparse pills swap which set of panels is shown */
+    (function () {
+        const pills = Array.prototype.slice.call(document.querySelectorAll('.timing-pill'));
+        if (!pills.length) return;
+        pills.forEach(function (pill) {
+            pill.addEventListener('click', function () {
+                const want = pill.dataset.setting;
+                pills.forEach(function (p) { p.classList.toggle('is-active', p === pill); });
+                document.querySelectorAll('.timing-set').forEach(function (set) {
+                    set.hidden = set.dataset.setting !== want;
+                });
+            });
+        });
+    })();
+
+    /* Analysis blocks: a header button reveals its panel, one open at a time.
+       Adapted from the method section of amitpeleg.github.io/forget-narrowly-retain-broadly. */
+    (function () {
+        const heads = Array.prototype.slice.call(document.querySelectorAll('.an-head[data-target]'));
+        if (!heads.length) return;
+        heads.forEach(function (head) {
+            head.addEventListener('click', function () {
+                const panel = document.getElementById(head.getAttribute('data-target'));
+                if (!panel) return;
+                const willOpen = panel.hasAttribute('hidden');
+                const scope = head.closest('section') || document;
+                scope.querySelectorAll('.an-panel').forEach(function (p) { p.setAttribute('hidden', ''); });
+                scope.querySelectorAll('.an-head').forEach(function (h) {
+                    h.classList.remove('active');
+                    h.setAttribute('aria-expanded', 'false');
+                });
+                if (!willOpen) return;
+                panel.removeAttribute('hidden');
+                head.classList.add('active');
+                head.setAttribute('aria-expanded', 'true');
+            });
+        });
+    })();
+
+    /* Hero table scene/init switcher */
+    (function () {
+        // Generated from the paper's render tree -- see static/hero-data.js.
+        const HERO_SCENE_DATA = window.HERO_SCENE_DATA || {};
+
+        const DEFAULT_CURVE_MEDIA = {
+            type: 'image',
+            src: 'static/images/figures/fig1_curves.png',
+            alt: 'PSNR curves'
+        };
+
+        const initButtons = document.getElementById('heroInitButtons');
+        const datasetButtons = document.getElementById('heroDatasetButtons');
+        const sceneButtons = document.getElementById('heroSceneButtons');
+        const timeSlider = document.getElementById('heroTimeSlider');
+        const timeValue = document.getElementById('heroTimeValue');
+        const sceneMeta = document.getElementById('heroSceneMeta');
+        const methodGrid = document.getElementById('heroMethodGrid');
+        const refPreview = document.getElementById('heroRefPreview');
+        const curvePreview = document.getElementById('heroCurvePreview');
+        const timeMarks = document.getElementById('heroTimeMarks');
+        if (!initButtons || !datasetButtons || !sceneButtons || !timeSlider || !timeValue || !methodGrid || !refPreview || !curvePreview || !timeMarks) return;
+
+        function snapStepFromClientX(clientX) {
+            var svg = curvePreview.querySelector('svg[data-xs]');
+            if (!svg) return null;
+            var rect = svg.getBoundingClientRect();
+            var padL = parseFloat(svg.dataset.padl);
+            var plotW = parseFloat(svg.dataset.plotw);
+            var lxMin = parseFloat(svg.dataset.lxmin);
+            var span = parseFloat(svg.dataset.span);
+            var xs = svg.dataset.xs.split(',').map(Number);
+            var svgW = parseFloat(svg.getAttribute('viewBox').split(' ')[2]);
+            var scale = svgW / rect.width;
+            var svgX = (clientX - rect.left) * scale;
+            var logT = (svgX - padL) / plotW * span + lxMin;
+            var t = Math.expm1(logT);
+            var steps = getCurrentEffectiveSteps();
+            if (!steps.length) return null;
+            return steps.reduce(function(best, s) {
+                return Math.abs(Number(s) - t) < Math.abs(Number(best) - t) ? s : best;
+            });
+        }
+
+        var curveDragging = false;
+        var curveDragRafPending = false;
+        var prefetchCache = {};
+        curvePreview.addEventListener('pointerdown', function(e) {
+            var hit = e.target.closest('[data-step]');
+            if (!hit) return;
+            curveDragging = true;
+            curvePreview.setPointerCapture(e.pointerId);
+            var step = hit.dataset.step === 'drag' ? snapStepFromClientX(e.clientX) : hit.dataset.step;
+            if (!step || step === 'drag') return;
+            var steps = getCurrentEffectiveSteps();
+            var matched = steps.find(function(s) { return Number(s) === Number(step); });
+            if (matched) {
+                currentStep = matched;
+                renderHeroTable(currentInit, currentDataset, currentScene, {resetZoom: false});
+            }
+        });
+        curvePreview.addEventListener('pointermove', function(e) {
+            if (!curveDragging) return;
+            var step = snapStepFromClientX(e.clientX);
+            if (!step || step === currentStep) return;
+            currentStep = step;
+            if (!curveDragRafPending) {
+                curveDragRafPending = true;
+                requestAnimationFrame(function() {
+                    curveDragRafPending = false;
+                    renderHeroTable(currentInit, currentDataset, currentScene, {resetZoom: false});
+                });
+            }
+        });
+        curvePreview.addEventListener('pointerup', function(e) {
+            curveDragging = false;
+            // Full render on release to ensure curve + prefetch are up to date
+            renderHeroTable(currentInit, currentDataset, currentScene, {resetZoom: false});
+        });
+        curvePreview.addEventListener('pointercancel', function(e) { curveDragging = false; });
+
+        const compactQuery = window.matchMedia('(max-width: 760px)');
+        const HERO_DEBUG = true;
+
+        function heroDebug(label, payload) {
+            if (!HERO_DEBUG) return;
+            if (typeof payload === 'undefined') {
+                console.log('[hero-debug]', label);
+            } else {
+                console.log('[hero-debug]', label, payload);
+            }
+        }
+
+        function logHeroLayoutSnapshot(stage, initKey, datasetKey, sceneKey) {
+            if (!HERO_DEBUG) return;
+            heroDebug(stage, {
+                initKey,
+                datasetKey,
+                sceneKey,
+                compact: compactQuery.matches,
+                methods: methodGrid.querySelectorAll('.hero-method-card').length,
+                selectedStep: timeValue.textContent,
+                gridRect: methodGrid.getBoundingClientRect()
+            });
+        }
+
+        function previewMarkup(path, alt) {
+            return '<img src="' + path + '" alt="' + alt + '" />';
+        }
+
+        function htmlToSvgText(str) {
+            if (!str) return '';
+            return str
+                .replace(/<sup>(.*?)<\/sup>/gi, '\x01$1\x02')
+                .replace(/<[^>]+>/g, '')
+                .replace(/\x01(.*?)\x02/g, '<tspan baseline-shift="super" font-size="6.5">$1</tspan>');
+        }
+
+        function renderPSNRChart(data, datasetLabel) {
+
+            if (!data || !data.methods || !data.xSteps || !data.xSteps.length) return '';
+            // Learn2Splat takes the theme's own purple, so the chart follows --accent if it changes.
+            var accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+            if (accent) {
+                data = Object.assign({}, data, {methods: data.methods.map(function(m) {
+                    return m.isOurs ? Object.assign({}, m, {color: accent}) : m;
+                })});
+            }
+            var compact = compactQuery.matches;
+            var nScenes = data.numScenes ? data.numScenes + ' ' : '';
+            var titleText = datasetLabel ? 'Avg. PSNR over ' + datasetLabel + ' dataset (' + nScenes + 'scenes)' : '';
+            // ── SVG chart layout ────────────────────────────────────────────────────
+            // All values are in SVG coordinate units. Everything scales proportionally
+            // to the rendered container: 1 SVG unit = containerWidth / W pixels.
+            //
+            // Canvas size
+            //   W   – total SVG width (coordinate space). Scale = containerWidth / W.
+            //   H   – total SVG height. Increase if content is clipped at the bottom.
+            //
+            // Margins around the plot
+            //   padL – left margin. Must fit the rotated Y-label + Y-tick numbers.
+            //          Increase if numbers or the "PSNR (dB)" label are cut off.
+            //   padR – right margin (small gap at the right edge).
+            //   padT – top margin. Fits the chart title when present.
+            //   padB – bottom margin: gap between the plot bottom and the x-axis label
+            //          ("iteration"). Controls spacing after the X-tick marks.
+            //
+            // Compact-only (legend below plot)
+            //   iterSpace   – height reserved for the "iteration" x-axis label, placed
+            //                 between the tick labels and the legend.
+            //   iterLegGap  – gap between the "iteration" baseline and the legend start.
+            //                 Increase to push the legend further down from the label.
+            //   legCols     – number of columns in the legend grid.
+            //   legLineH  – row height in the legend. Increase if rows overlap.
+            //   legH      – computed: legRows × legLineH + 4 (auto, do not edit).
+            //
+            // Non-compact-only (legend to the right of plot)
+            //   legW – width reserved for the right-side legend.
+            //
+            // Derived (computed automatically — do not edit)
+            //   plotW = W - padL - padR - legW
+            //   plotH = H - padT - padB  (- iterSpace - legH  in compact)
+            //   If plotH ≤ 0 you've run out of space — increase H.
+            //
+            // Y-axis label
+            //   yLx (below) – X center of the rotated "PSNR (dB)" text.
+            //                 Must be ≥ font size (ctFs) to avoid left-edge clipping.
+            //
+            // Font sizes (a few lines below)
+            //   ctFs  – axis labels, tick numbers, "iteration" text.
+            //   ctbFs – legend method names (slightly larger).
+            // ────────────────────────────────────────────────────────────────────────
+            var W, H, padL, padR, padT, padB, legW, plotW, plotH;
+            if (compact) {
+                W = 360; H = 196;
+                padL = 60; padR = 6; padT = titleText ? 16 : 6; padB = 18;
+                var legCols = 2, legLineH = 14;
+                var legRows = Math.ceil(data.methods.length / legCols);
+                var legH = legRows * legLineH + 4;
+                var iterSpace = 26; // space for x-axis label between ticks and legend
+                var iterLegGap = compact ? 12 : 0; // gap between "iteration" label and legend start (compact only)
+                plotW = W - padL - padR; plotH = H - padT - padB - iterSpace - legH;
+                legW = 0;
+            } else {
+                W = 560; H = 124;
+                padL = 38; padR = 4; padT = titleText ? 17 : 8; padB = 22;
+                // a narrower legend leaves more of the width to the plot: the dense hero has
+                // only three entries, and the old 130 crowded the curves
+                legW = 100;
+                plotW = W - padL - padR - legW; plotH = H - padT - padB;
+            }
+            var xs = data.xSteps;
+            var lxMin = Math.log1p(xs[0]), lxMax = Math.log1p(xs[xs.length - 1]);
+            var span = Math.max(1e-9, lxMax - lxMin);
+            var allVals = [];
+            data.methods.forEach(function(m) { m.values.forEach(function(v) { if (v != null) allVals.push(v); }); });
+            var rawYMin = Math.min.apply(null, allVals), rawYMax = Math.max.apply(null, allVals);
+            var yPad = (rawYMax - rawYMin) * 0.12 || 0.5;
+            var yMin = (data.yMin != null) ? data.yMin : rawYMin - yPad;
+            var yMax = rawYMax + yPad;
+            var ySpan = Math.max(1e-9, yMax - yMin);
+            function xpx(t) { return padL + (Math.log1p(t) - lxMin) / span * plotW; }
+            function ypx(v) { return padT + plotH - (v - yMin) / ySpan * plotH; }
+            var s = [];
+            s.push('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:100%;display:block" data-padl="' + padL + '" data-plotw="' + plotW + '" data-plott="' + padT + '" data-ploth="' + plotH + '" data-lxmin="' + lxMin + '" data-span="' + span + '" data-xs="' + xs.join(',') + '">');
+            var ctFs = compact ? '12' : '9', ctbFs = compact ? '13' : '9.5';
+            s.push('<style>.ct{font-family:var(--mono,monospace);font-size:' + ctFs + 'px;fill:rgba(136,144,176,0.8)}.ctb{font-family:var(--mono,monospace);font-size:' + ctbFs + 'px;fill:rgba(136,144,176,0.9)}</style>');
+            s.push('<defs><clipPath id="plotClip"><rect x="' + padL + '" y="' + padT + '" width="' + plotW + '" height="' + plotH + '"/></clipPath></defs>');
+            if (titleText) s.push('<text class="ct" x="' + (padL + plotW / 2) + '" y="' + (compact ? 11 : 10) + '" text-anchor="middle" font-weight="bold" font-style="italic">' + titleText + '</text>');
+            // Y grid + labels (3 ticks)
+            for (var i = 0; i <= 3; i++) {
+                var v = yMin + ySpan * i / 3, yv = ypx(v);
+                s.push('<line x1="' + padL + '" y1="' + yv.toFixed(1) + '" x2="' + (padL + plotW) + '" y2="' + yv.toFixed(1) + '" stroke="rgba(136,144,176,0.15)" stroke-width="0.75"/>');
+                s.push('<text class="ct" x="' + (padL - 3) + '" y="' + (yv + 2.5).toFixed(1) + '" text-anchor="end">' + v.toFixed(1) + '</text>');
+            }
+            // X ticks + labels
+            // Only draw at clean boundaries (no "1.2k" etc.), then skip overlapping labels
+            var lastLabelRightEdge = -Infinity;
+            xs.forEach(function(t) {
+                var isNiceTick = t < 1000 || t % 1000 === 0;
+                if (!isNiceTick) return;
+                var xv = xpx(t);
+                s.push('<line x1="' + xv.toFixed(1) + '" y1="' + (padT + plotH) + '" x2="' + xv.toFixed(1) + '" y2="' + (padT + plotH + 2.5) + '" stroke="rgba(136,144,176,0.35)" stroke-width="0.75"/>');
+                var lbl = t >= 1e6 ? (t / 1e6) + 'M' : t >= 1e3 ? (t / 1e3) + 'k' : String(t);
+                var approxHalfW = lbl.length * (compact ? 3.6 : 2.9); // half-width estimate
+                if (xv - approxHalfW >= lastLabelRightEdge + 3) {
+                    s.push('<text class="ct" x="' + xv.toFixed(1) + '" y="' + (padT + plotH + (compact ? 13 : 9)) + '" text-anchor="middle">' + lbl + '</text>');
+                    lastLabelRightEdge = xv + approxHalfW;
+                }
+            });
+            // Axis border
+            s.push('<rect x="' + padL + '" y="' + padT + '" width="' + plotW + '" height="' + plotH + '" fill="none" stroke="rgba(136,144,176,0.25)" stroke-width="0.75"/>');
+            // Active step indicator
+            var activeT = (currentStep && currentStep !== '__init__') ? Number(currentStep) : 0;
+            if (activeT > 0 && activeT >= xs[0] && activeT <= xs[xs.length - 1]) {
+                var axv = xpx(activeT);
+                s.push('<line x1="' + axv.toFixed(1) + '" y1="' + padT + '" x2="' + axv.toFixed(1) + '" y2="' + (padT + plotH) + '" stroke="rgba(136,144,176,0.45)" stroke-width="0.75" stroke-dasharray="2,1.5"/>');
+            }
+            // Method lines + dots — draw baselines first, then ours on top
+            var orderedMethods = data.methods.slice().sort(function(a, b) { return (a.isOurs ? 1 : 0) - (b.isOurs ? 1 : 0); });
+            s.push('<g clip-path="url(#plotClip)">');
+            function drawMethodLine(m) {
+                var sw = m.isOurs ? '2.2' : '1.5';
+                // One polyline through every step this method has: a missing iteration is skipped
+                // rather than breaking the line, so a method logged on a coarser grid than its
+                // neighbours still reads as one curve. A run that stops (diverged, out of memory)
+                // contributes no later points, so its line simply ends there.
+                var seg = [];
+                xs.forEach(function(t, i) {
+                    var v = m.values[i];
+                    if (v != null) seg.push(xpx(t).toFixed(1) + ',' + ypx(v).toFixed(1));
+                });
+                if (seg.length > 1) s.push('<polyline points="' + seg.join(' ') + '" fill="none" stroke="' + m.color + '" stroke-width="' + sw + '" stroke-linejoin="round" stroke-linecap="round" pointer-events="none"/>');
+                xs.forEach(function(t, i) {
+                    var v = m.values[i];
+                    if (v == null) return;
+                    var isActive = t === activeT;
+                    if (isActive) s.push('<circle cx="' + xpx(t).toFixed(1) + '" cy="' + ypx(v).toFixed(1) + '" r="3.5" fill="none" stroke="' + m.color + '" stroke-width="1" pointer-events="none"/>');
+                    s.push('<circle cx="' + xpx(t).toFixed(1) + '" cy="' + ypx(v).toFixed(1) + '" r="' + (isActive ? 2 : 1.5) + '" fill="' + m.color + '" pointer-events="none"/>');
+                });
+            }
+            orderedMethods.forEach(drawMethodLine);
+            s.push('</g>');
+            // Drag/click overlay covering full plot area
+            s.push('<rect class="curve-drag-area" x="' + padL + '" y="' + padT + '" width="' + plotW + '" height="' + plotH + '" fill="transparent" style="cursor:ew-resize" data-step="drag"/>');
+            // Clickable hit columns (for cursor feedback on data points)
+            xs.forEach(function(t) {
+                var xv = xpx(t);
+                s.push('<rect x="' + (xv - 6).toFixed(1) + '" y="' + padT + '" width="12" height="' + plotH + '" fill="transparent" style="cursor:ew-resize" data-step="' + t + '"/>');
+            });
+            // Y axis label
+            var yLx = compact ? 22 : 9, yLy = padT + plotH / 2;
+            s.push('<text class="ct" x="' + yLx + '" y="' + yLy + '" text-anchor="middle" transform="rotate(-90 ' + yLx + ' ' + yLy + ')">PSNR (dB)</text>');
+            // X axis label
+            var iterY = compact ? (padT + plotH + padB + iterSpace - iterLegGap) : (H - 1);
+            s.push('<text class="ct" x="' + (padL + plotW / 2) + '" y="' + iterY + '" text-anchor="middle">iteration</text>');
+            // Legend
+            if (compact) {
+                // Below plot, 2-column grid
+                var legY0 = padT + plotH + padB + iterSpace;
+                var colW = (W - padL - padR) / legCols;
+                data.methods.forEach(function(m, i) {
+                    var col = i % legCols, row = Math.floor(i / legCols);
+                    var lx = padL + col * colW, ly = legY0 + row * legLineH;
+                    s.push('<line x1="' + lx + '" y1="' + (ly + 4) + '" x2="' + (lx + 14) + '" y2="' + (ly + 4) + '" stroke="' + m.color + '" stroke-width="1.5" stroke-linecap="round"/>');
+                    s.push('<circle cx="' + (lx + 7) + '" cy="' + (ly + 4) + '" r="1.5" fill="' + m.color + '"/>');
+                    s.push('<text class="ctb" style="' + (m.isOurs ? 'font-weight:700;' : '') + '" fill="' + m.color + '" x="' + (lx + 19) + '" y="' + (ly + 7.5) + '">' + htmlToSvgText(m.label) + '</text>');
+                });
+            } else {
+                // Right side, vertically centred
+                var legX = padL + plotW + padR + 6;
+                var legSpacing = Math.min(14, plotH / data.methods.length);
+                var legStartY = padT + (plotH - legSpacing * (data.methods.length - 1)) / 2;
+                data.methods.forEach(function(m, i) {
+                    var ly = legStartY + i * legSpacing;
+                    s.push('<line x1="' + legX + '" y1="' + ly.toFixed(1) + '" x2="' + (legX + 12) + '" y2="' + ly.toFixed(1) + '" stroke="' + m.color + '" stroke-width="1.5" stroke-linecap="round"/>');
+                    s.push('<circle cx="' + (legX + 6) + '" cy="' + ly.toFixed(1) + '" r="1.5" fill="' + m.color + '"/>');
+                    s.push('<text class="ctb" style="' + (m.isOurs ? 'font-weight:700;' : '') + '" fill="' + m.color + '" x="' + (legX + 16) + '" y="' + (ly + 2.5).toFixed(1) + '">' + htmlToSvgText(m.label) + '</text>');
+                });
+            }
+            s.push('</svg>');
+            return s.join('');
+        }
+
+        function curveMarkup(curveMedia, datasetLabel) {
+            const media = curveMedia || DEFAULT_CURVE_MEDIA;
+            if (media.type === 'chart') return renderPSNRChart(media.data, datasetLabel);
+            return '<img class="hero-curve-media" src="' + media.src + '" alt="' + (media.alt || 'PSNR curves') + '" />';
+        }
+
+        function psnrBadge(value, known) {
+            if (!known) return '';
+            const text = value == null ? 'diverged' : Number(value).toFixed(2) + ' dB';
+            return '<span class="iter-psnr">' + text + '</span>';
+        }
+
+        function methodToneClass(folder) {
+            return 'method-tone-' + String(folder || 'default').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        }
+
+        function getCurrentSceneData() {
+            const initData = HERO_SCENE_DATA[currentInit];
+            const datasetData = initData && initData.datasets ? initData.datasets[currentDataset] : null;
+            const sceneData = datasetData && datasetData.scenes ? datasetData.scenes[currentScene] : null;
+            return {initData, datasetData, sceneData};
+        }
+
+        function getCurrentEffectiveSteps() {
+            const {initData, datasetData, sceneData} = getCurrentSceneData();
+            return getEffectiveSteps(initData, datasetData, sceneData);
+        }
+
+        function logPos(tValue) { return Math.log1p(tValue); }
+
+        function buildTimelineEntries(steps) {
+            return ['__init__'].concat(steps || []).map((rawStep, idx) => {
+                const parsed = rawStep === '__init__' ? 0 : Number(rawStep);
+                return {
+                    rawStep,
+                    tValue: Number.isFinite(parsed) ? parsed : idx
+                };
+            });
+        }
+
+        function findNearestTimelineEntry(entries, targetValue) {
+            if (!entries.length) return null;
+            return entries.reduce((best, entry) => {
+                const bestDist = Math.abs(best.tValue - targetValue);
+                const entryDist = Math.abs(entry.tValue - targetValue);
+                if (entryDist < bestDist) return entry;
+                if (entryDist === bestDist && entry.tValue < best.tValue) return entry;
+                return best;
+            }, entries[0]);
+        }
+
+        function getEffectiveSteps(initData, datasetData, scene) {
+            if (scene && scene.steps !== undefined) return scene.steps;
+            if (datasetData && datasetData.defaultSteps !== undefined) return datasetData.defaultSteps;
+            if (initData && initData.defaultSteps !== undefined) return initData.defaultSteps;
+            return [];
+        }
+
+        function getEffectiveMethods(initData, datasetData, scene) {
+            if (scene && scene.methods !== undefined) return scene.methods;
+            if (datasetData && datasetData.defaultMethods !== undefined) return datasetData.defaultMethods;
+            if (initData && initData.defaultMethods !== undefined) return initData.defaultMethods;
+            return [];
+        }
+
+        function getEffectiveInitImage(initData, datasetData, scene) {
+            if (scene && scene.initImage !== undefined) return scene.initImage;
+            if (datasetData && datasetData.defaultInitImage !== undefined) return datasetData.defaultInitImage;
+            if (initData && initData.defaultInitImage !== undefined) return initData.defaultInitImage;
+            return '';
+        }
+
+        function getEffectiveRefImage(initData, datasetData, scene) {
+            if (scene && scene.refImage !== undefined) return scene.refImage;
+            if (datasetData && datasetData.defaultRefImage !== undefined) return datasetData.defaultRefImage;
+            if (initData && initData.defaultRefImage !== undefined) return initData.defaultRefImage;
+            return '';
+        }
+
+        function resolveMethodStep(effectiveSteps, method, targetRawStep) {
+            if (targetRawStep === '__init__') return '__init__';
+            const available = method && method.availableSteps && method.availableSteps.length ? method.availableSteps : effectiveSteps;
+            if (!available.length || available.indexOf(targetRawStep) !== -1) return targetRawStep;
+            const targetValue = Number(targetRawStep);
+            if (!Number.isFinite(targetValue)) return available[0];
+
+            return available.reduce((best, step) => {
+                const bestValue = Number(best);
+                const stepValue = Number(step);
+                const bestDist = Math.abs(bestValue - targetValue);
+                const stepDist = Math.abs(stepValue - targetValue);
+                if (stepDist < bestDist) return step;
+                if (stepDist === bestDist && stepValue < bestValue) return step;
+                return best;
+            }, available[0]);
+        }
+
+        var LOG_SLIDER_SCALE = 1000;
+
+        function renderTimeControl(steps) {
+            const entries = buildTimelineEntries(steps);
+            if (!entries.length) return;
+            const activeEntry = entries.find(e => e.rawStep === currentStep) || entries[0];
+            if (currentStep !== activeEntry.rawStep) currentStep = activeEntry.rawStep;
+
+            const maxLP = Math.max(1, logPos(entries[entries.length - 1].tValue));
+
+            timeSlider.min = '0';
+            timeSlider.max = String(LOG_SLIDER_SCALE);
+            timeSlider.step = '1';
+            timeSlider.value = String(Math.round((logPos(activeEntry.tValue) / maxLP) * LOG_SLIDER_SCALE));
+            timeValue.textContent = activeEntry.rawStep === '__init__' ? 'Init (t = 0)' : 't = ' + activeEntry.tValue;
+
+            const majorHTML = entries.map((entry, idx) => {
+                const leftPercent = (logPos(entry.tValue) / maxLP) * 100;
+                const label = entry.rawStep === '__init__' ? 'Init (t = 0)' : 't = ' + entry.tValue;
+                const shortLabel = entry.rawStep === '__init__' ? 'Init' : String(entry.tValue);
+                var cls = entry.rawStep === activeEntry.rawStep ? 'hero-time-mark is-active' : 'hero-time-mark';
+                if (idx === 0) cls += ' is-first';
+                if (idx === entries.length - 1) cls += ' is-last';
+                // Every logged step is a mark, but only Init, 2, the decades and the last step carry
+                // a label -- at up to 29 steps the rest would overlap.
+                const showLabel = idx === 0 || idx === entries.length - 1 || /^(2|10*)$/.test(String(entry.tValue));
+                return '<span class="' + cls + '" style="left:' + leftPercent + '%" title="' + label + '">' +
+                    (showLabel ? '<span class="hero-time-mark-label">' + shortLabel + '</span>' : '') + '</span>';
+            }).join('');
+
+            timeMarks.innerHTML = majorHTML;
+        }
+
+        function prefetchSceneImages(initKey, datasetKey, sceneKey) {
+            const initData = HERO_SCENE_DATA[initKey];
+            const datasetData = initData && initData.datasets ? initData.datasets[datasetKey] : null;
+            const scene = datasetData && datasetData.scenes ? datasetData.scenes[sceneKey] : null;
+            if (!scene) return;
+            const base = 'static/images/scenes/' + initKey + '/' + datasetKey + '/' + sceneKey + '/';
+            const urls = new Set();
+            const effectiveSceneSteps = getEffectiveSteps(initData, datasetData, scene);
+            const effectiveInitImage = getEffectiveInitImage(initData, datasetData, scene);
+            const effectiveRefImage = getEffectiveRefImage(initData, datasetData, scene);
+            if (effectiveInitImage) urls.add(base + effectiveInitImage);
+            urls.add(base + effectiveRefImage);
+            getEffectiveMethods(initData, datasetData, scene).forEach(function(m) {
+                const steps = (m.availableSteps && m.availableSteps.length) ? m.availableSteps : effectiveSceneSteps;
+                steps.forEach(function(step) {
+                    urls.add(base + m.folder + '/' + step + '.jpg');
+                });
+            });
+            urls.forEach(function(url) {
+                if (!prefetchCache[url]) {
+                    var img = new Image();
+                    img.src = url;
+                    prefetchCache[url] = img;
+                }
+            });
+        }
+
+        function renderHeroTable(initKey, datasetKey, sceneKey, options) {
+            const renderOptions = options || {};
+            const shouldResetZoom = Boolean(renderOptions.resetZoom);
+            const initData = HERO_SCENE_DATA[initKey];
+            const datasetData = initData && initData.datasets ? initData.datasets[datasetKey] : null;
+            const scene = datasetData && datasetData.scenes ? datasetData.scenes[sceneKey] : null;
+            if (!initData || !datasetData || !scene) return;
+            const base = 'static/images/scenes/' + initKey + '/' + datasetKey + '/' + sceneKey + '/';
+            const steps = getEffectiveSteps(initData, datasetData, scene);
+            const timeline = ['__init__'].concat(steps);
+            if (!timeline.length) return;
+            if (!currentStep || timeline.indexOf(currentStep) === -1) currentStep = '__init__';
+            renderTimeControl(steps);
+            heroDebug('render:start', {initKey, datasetKey, sceneKey, compact: compactQuery.matches, steps});
+
+            const methods = getEffectiveMethods(initData, datasetData, scene);
+            const initImage = getEffectiveInitImage(initData, datasetData, scene);
+            const refImage = getEffectiveRefImage(initData, datasetData, scene);
+            const aspect = scene.aspect || '16 / 9';
+            const isInit = currentStep === '__init__';
+            // on the root so the Reference row below can size its cells to match
+            document.documentElement.style.setProperty('--hero-cols', String(Math.min(Math.max(methods.length, 1), 4)));
+            const cells = methods.map(m => {
+                const methodStep = resolveMethodStep(steps, m, currentStep);
+                // a method with no render at this step (a diverged or out-of-memory run)
+                const missing = !isInit && methodStep !== currentStep;
+                const known = isInit ? scene.initPsnr != null : Boolean(m.psnr && methodStep in m.psnr);
+                return {
+                    method: m,
+                    missing: missing,
+                    src: missing ? '' : (isInit ? (initImage ? base + initImage : '')
+                                                : base + m.folder + '/' + methodStep + '.jpg'),
+                    alt: isInit ? m.label + ' at init' : m.label + ' at t=' + Number(currentStep),
+                    // a placeholder cell carries no PSNR: the number would be the nearest
+                    // surviving step's, not this one's
+                    badge: missing ? '' : psnrBadge(isInit ? scene.initPsnr : (m.psnr ? m.psnr[methodStep] : null), known)
+                };
+            });
+
+            // The grid is rebuilt only when its cells change shape — a different scene, method set,
+            // or a cell turning into a placeholder. Moving the slider merely swaps each <img>'s
+            // source, so the element survives and with it a ctrl+scroll zoom, which used to be
+            // thrown away (and visibly re-animated) on every step.
+            const shape = [initKey, datasetKey, sceneKey, aspect].concat(
+                cells.map(c => c.method.folder + (c.missing || !c.src ? ':ph' : ''))).join('|');
+            if (shape !== renderHeroTable.shape) {
+                renderHeroTable.shape = shape;
+                methodGrid.innerHTML = cells.map(c => {
+                    const tagClass = (c.method.isOurs ? 'hero-method-tag is-ours ' : 'hero-method-tag ') + methodToneClass(c.method.folder);
+                    const cellHTML = (c.missing || !c.src)
+                        ? '<div class="iter-cell iter-cell--oom ph" style="aspect-ratio:' + aspect + '"><span>' + (c.missing ? (c.method.missingLabel || 'N/A') : 'Init unavailable') + '</span></div>'
+                        : '<div class="iter-cell" style="aspect-ratio:' + aspect + '"><img src="' + c.src + '" alt="' + c.alt + '" />' + c.badge + '</div>';
+                    return [
+                        '<article class="hero-method-card">',
+                        '<div class="' + tagClass + '">' + c.method.label + '</div>',
+                        cellHTML,
+                        '</article>'
+                    ].join('');
+                }).join('');
+            } else {
+                const cards = methodGrid.querySelectorAll('.hero-method-card');
+                cells.forEach(function (c, i) {
+                    const card = cards[i];
+                    // a placeholder cell has nothing to swap; it only ever appears via a rebuild
+                    if (!card || c.missing || !c.src) return;
+                    const img = card.querySelector('img');
+                    if (img && img.getAttribute('src') !== c.src) {
+                        img.setAttribute('src', c.src);
+                        img.setAttribute('alt', c.alt);
+                    }
+                    const badge = card.querySelector('.iter-psnr');
+                    if (badge) badge.remove();
+                    const cell = card.querySelector('.iter-cell');
+                    if (cell && c.badge) cell.insertAdjacentHTML('beforeend', c.badge);
+                });
+            }
+
+            const footnote = document.getElementById('heroFootnote');
+            if (footnote) footnote.hidden = initKey !== 'dense';
+
+            // the reference view does not change with the step, so leave its element alone
+            if (refPreview.dataset.src !== base + refImage) {
+                refPreview.dataset.src = base + refImage;
+                refPreview.style.aspectRatio = aspect;
+                refPreview.innerHTML = previewMarkup(base + refImage, 'Reference');
+            }
+            const isChartMode = datasetData.curveMedia && datasetData.curveMedia.type === 'chart';
+            curvePreview.innerHTML = curveMarkup(datasetData.curveMedia, datasetData.label);
+            const legendDiv = document.getElementById('heroLegendDiv');
+            if (legendDiv) legendDiv.style.display = isChartMode ? 'none' : '';
+
+            sceneMeta.textContent = initData.label + ' • ' + datasetData.label + ' • ' + scene.label;
+            if (shouldResetZoom && typeof resetHeroZoomState === 'function') resetHeroZoomState();
+            bindHeroImageZoom();
+            logHeroLayoutSnapshot('render:after-dom', initKey, datasetKey, sceneKey);
+            requestAnimationFrame(() => {
+                logHeroLayoutSnapshot('render:raf', initKey, datasetKey, sceneKey);
+                if (!curveDragging) prefetchSceneImages(initKey, datasetKey, sceneKey);
+            });
+        }
+
+        function ensureHeroTableVisible() {
+            if (!methodGrid) return;
+            const host = methodGrid.closest('.teaser-table-side') || methodGrid;
+            const r = host.getBoundingClientRect();
+            const offscreenTop = r.bottom < 64;
+            const offscreenBottom = r.top > window.innerHeight;
+            if (offscreenTop || offscreenBottom) {
+                host.scrollIntoView({block: 'nearest', inline: 'nearest', behavior: 'auto'});
+                heroDebug('table:scrollIntoView', {offscreenTop, offscreenBottom, rect: r});
+            }
+        }
+
+        function buttonMarkup(key, label, isActive) {
+            const cls = isActive ? 'hero-control-btn is-active' : 'hero-control-btn';
+            return '<button type="button" class="' + cls + '" data-key="' + key + '" aria-pressed="' + (isActive ? 'true' : 'false') + '">' + label + '</button>';
+        }
+
+        function bindButtonClicks(container, onSelect) {
+            container.querySelectorAll('.hero-control-btn').forEach(btn => {
+                btn.addEventListener('click', () => onSelect(btn.dataset.key));
+            });
+        }
+
+        function bindButtonKeyboard(container, onSelect) {
+            container.addEventListener('keydown', e => {
+                const navKey = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+                if (navKey.indexOf(e.key) === -1) return;
+                const buttons = Array.from(container.querySelectorAll('.hero-control-btn'));
+                if (!buttons.length) return;
+                const focusedIdx = buttons.indexOf(document.activeElement);
+                if (focusedIdx === -1) return;
+
+                e.preventDefault();
+                let nextIdx = focusedIdx;
+                if (e.key === 'Home') nextIdx = 0;
+                if (e.key === 'End') nextIdx = buttons.length - 1;
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextIdx = (focusedIdx + 1) % buttons.length;
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') nextIdx = (focusedIdx - 1 + buttons.length) % buttons.length;
+
+                const next = buttons[nextIdx];
+                if (!next) return;
+                onSelect(next.dataset.key, true);
+            });
+        }
+
+        let currentInit = 'dense';
+        let currentDataset = null;
+        let currentScene = null;
+        let currentStep = null;
+
+        function renderInitButtons() {
+            const initKeys = Object.keys(HERO_SCENE_DATA);
+            initButtons.innerHTML = initKeys
+                .map(k => {
+                    // the dense pill carries the asterisk the footnote below answers
+                    let markup = buttonMarkup(k, HERO_SCENE_DATA[k].label, k === currentInit);
+                    if (k === 'dense') {
+                        // outside the pill's fill, where ReSplat's green reads against the page
+                        markup = '<span class="hero-btn-wrap">' + markup +
+                            '<span class="hero-pill-mark" aria-hidden="true">*</span></span>';
+                    }
+                    if (k === 'sparse') {
+                        const badgeActive = k === currentInit ? ' is-active' : '';
+                        markup = '<span class="hero-btn-wrap">' + markup +
+                            '<a href="https://haofeixu.github.io/resplat/" target="_blank" rel="noopener noreferrer" class="hero-paper-badge' + badgeActive + '" aria-label="Open ReSplat paper in new tab">&#8599;</a>' +
+                            '</span>';
+                    }
+                    return markup;
+                })
+                .join('');
+            bindButtonClicks(initButtons, setInit);
+        }
+
+        function renderDatasetButtons() {
+            const initData = HERO_SCENE_DATA[currentInit];
+            const datasetKeys = initData && initData.datasets ? Object.keys(initData.datasets) : [];
+            if (!datasetKeys.length) {
+                currentDataset = null;
+                datasetButtons.innerHTML = '';
+                return;
+            }
+            if (!currentDataset || datasetKeys.indexOf(currentDataset) === -1) {
+                currentDataset = datasetKeys[0];
+            }
+            datasetButtons.innerHTML = datasetKeys
+                .map(k => buttonMarkup(k, initData.datasets[k].label, k === currentDataset))
+                .join('');
+            bindButtonClicks(datasetButtons, setDataset);
+        }
+
+        function renderSceneButtons(focusKey) {
+            const initData = HERO_SCENE_DATA[currentInit];
+            const datasetData = initData && initData.datasets ? initData.datasets[currentDataset] : null;
+            const sceneKeys = datasetData && datasetData.scenes ? Object.keys(datasetData.scenes) : [];
+            if (!sceneKeys.length) return;
+            if (!currentScene || sceneKeys.indexOf(currentScene) === -1) {
+                currentScene = sceneKeys[0];
+            }
+            sceneButtons.innerHTML = sceneKeys
+                .map(k => buttonMarkup(k, datasetData.scenes[k].label, k === currentScene))
+                .join('');
+            bindButtonClicks(sceneButtons, setScene);
+            if (focusKey) {
+                const btn = sceneButtons.querySelector('.hero-control-btn[data-key="' + focusKey + '"]');
+                if (btn) btn.focus();
+            }
+        }
+
+        const HERO_INIT_COLORS = {
+            'dense': '#9E5EBB',
+            'sparse': '#9E5EBB'
+        };
+
+        function setInit(initKey, moveFocus) {
+            if (!HERO_SCENE_DATA[initKey]) return;
+            currentInit = initKey;
+            document.documentElement.style.setProperty('--hero-color', HERO_INIT_COLORS[initKey] || '#9E5EBB');
+            currentDataset = null;
+            currentScene = null;
+            renderInitButtons();
+            renderDatasetButtons();
+            renderSceneButtons();
+            renderHeroTable(currentInit, currentDataset, currentScene, {resetZoom: true});
+            if (moveFocus) {
+                const btn = initButtons.querySelector('.hero-control-btn[data-key="' + initKey + '"]');
+                if (btn) btn.focus();
+            }
+        }
+
+        function setDataset(datasetKey, moveFocus) {
+            const datasetData = HERO_SCENE_DATA[currentInit] && HERO_SCENE_DATA[currentInit].datasets
+                ? HERO_SCENE_DATA[currentInit].datasets
+                : null;
+            if (!datasetData || !datasetData[datasetKey]) return;
+            currentDataset = datasetKey;
+            currentScene = null;
+            renderDatasetButtons();
+            renderSceneButtons();
+            renderHeroTable(currentInit, currentDataset, currentScene, {resetZoom: true});
+            if (moveFocus) {
+                const btn = datasetButtons.querySelector('.hero-control-btn[data-key="' + datasetKey + '"]');
+                if (btn) btn.focus();
+            }
+        }
+
+        function setScene(sceneKey, moveFocus) {
+            const sceneData = HERO_SCENE_DATA[currentInit] && HERO_SCENE_DATA[currentInit].datasets && HERO_SCENE_DATA[currentInit].datasets[currentDataset]
+                ? HERO_SCENE_DATA[currentInit].datasets[currentDataset].scenes
+                : null;
+            if (!sceneData || !sceneData[sceneKey]) return;
+            currentScene = sceneKey;
+            renderSceneButtons();
+            renderHeroTable(currentInit, currentDataset, currentScene, {resetZoom: true});
+            if (moveFocus) {
+                const btn = sceneButtons.querySelector('.hero-control-btn[data-key="' + sceneKey + '"]');
+                if (btn) btn.focus();
+            }
+        }
+
+        bindButtonKeyboard(initButtons, setInit);
+        bindButtonKeyboard(datasetButtons, setDataset);
+        bindButtonKeyboard(sceneButtons, setScene);
+
+        timeSlider.addEventListener('input', () => {
+            const steps = getCurrentEffectiveSteps();
+            const entries = buildTimelineEntries(steps);
+            if (!entries.length) return;
+            const maxLP = Math.max(1, logPos(entries[entries.length - 1].tValue));
+            const targetLP = (Number(timeSlider.value) / LOG_SLIDER_SCALE) * maxLP;
+            const selected = entries.reduce(function(best, entry) {
+                return Math.abs(logPos(entry.tValue) - targetLP) < Math.abs(logPos(best.tValue) - targetLP) ? entry : best;
+            }, entries[0]);
+            if (!selected) return;
+            currentStep = selected.rawStep;
+            renderHeroTable(currentInit, currentDataset, currentScene, {resetZoom: false});
+        });
+
+        setInit(currentInit);
+
+        let wasCompact = compactQuery.matches;
+        const onCompactChange = () => {
+            const isCompact = compactQuery.matches;
+            if (isCompact === wasCompact) return;
+            heroDebug('compact:change', {from: wasCompact, to: isCompact, width: window.innerWidth});
+            wasCompact = isCompact;
+            renderHeroTable(currentInit, currentDataset, currentScene);
+            requestAnimationFrame(ensureHeroTableVisible);
+        };
+        if (typeof compactQuery.addEventListener === 'function') {
+            compactQuery.addEventListener('change', onCompactChange);
+        } else {
+            compactQuery.addListener(onCompactChange);
+        }
+    })();
+
+    /* Image comparison slider */
+    (function () {
+        const el = document.getElementById('slider');
+        if (!el) return;
+        const right = document.getElementById('sliderRight');
+        const div = document.getElementById('divider');
+        const handle = document.getElementById('handle');
+        let active = false;
+
+        function set(x) {
+            const r = el.getBoundingClientRect();
+            const p = Math.max(2, Math.min(98, (x - r.left) / r.width * 100));
+            div.style.left = p + '%';
+            handle.style.left = p + '%';
+            right.style.clipPath = 'inset(0 ' + (100 - p) + '% 0 0)';
+        }
+
+        el.addEventListener('mousedown', e => {
+            active = true;
+            set(e.clientX);
+        });
+        el.addEventListener('touchstart', e => {
+            active = true;
+            set(e.touches[0].clientX);
+        }, {passive: true});
+        window.addEventListener('mousemove', e => {
+            if (active) set(e.clientX);
+        });
+        window.addEventListener('touchmove', e => {
+            if (active) set(e.touches[0].clientX);
+        }, {passive: true});
+        window.addEventListener('mouseup', () => active = false);
+        window.addEventListener('touchend', () => active = false);
+    })();
+
+    /* Wheel / Ctrl+scroll zoom for hero images */
+    function bindHeroImageZoom() {
+        const MIN = 1, MAX = 4;
+        const hero = document.querySelector('.hero');
+        if (!hero) return;
+
+        if (!bindHeroImageZoom.state) {
+            const ZOOM_SELECTOR = '.iter-cell';
+            const state = {
+                scale: 1,
+                ox: 50,
+                oy: 50,
+                dragging: false,
+                dragCell: null,
+                lx: 0,
+                ly: 0
+            };
+
+            const getCells = () => Array.from(hero.querySelectorAll(ZOOM_SELECTOR));
+            const apply = () => {
+                getCells().forEach(cell => {
+                    const img = cell.querySelector('img');
+                    if (!img) return;
+                    img.style.transformOrigin = state.ox + '% ' + state.oy + '%';
+                    img.style.transform = 'scale(' + state.scale + ')';
+                    if (state.dragging && state.scale > 1 && state.dragCell === cell) {
+                        cell.style.cursor = 'grabbing';
+                    } else {
+                        cell.style.cursor = state.scale > 1 ? 'grab' : 'zoom-in';
+                    }
+                });
+            };
+
+            hero.addEventListener('wheel', e => {
+                const cell = e.target.closest(ZOOM_SELECTOR);
+                if (!cell) return;
+                // Only zoom on explicit modifier; plain wheel/touchpad scroll should keep page scrolling.
+                if (!e.ctrlKey && !e.metaKey) return;
+                e.preventDefault();
+                const r = cell.getBoundingClientRect();
+                state.ox = ((e.clientX - r.left) / r.width) * 100;
+                state.oy = ((e.clientY - r.top) / r.height) * 100;
+                const delta = -e.deltaY * 0.05;
+                state.scale = Math.min(MAX, Math.max(MIN, state.scale + delta));
+                apply();
+            }, {passive: false});
+
+            hero.addEventListener('dblclick', e => {
+                const cell = e.target.closest(ZOOM_SELECTOR);
+                if (!cell) return;
+                state.scale = 1;
+                state.ox = 50;
+                state.oy = 50;
+                state.dragging = false;
+                state.dragCell = null;
+                apply();
+            });
+
+            hero.addEventListener('mousedown', e => {
+                const cell = e.target.closest(ZOOM_SELECTOR);
+                if (!cell || state.scale <= 1) return;
+                state.dragging = true;
+                state.dragCell = cell;
+                state.lx = e.clientX;
+                state.ly = e.clientY;
+                apply();
+            });
+
+            window.addEventListener('mousemove', e => {
+                if (!state.dragging || !state.dragCell) return;
+                const r = state.dragCell.getBoundingClientRect();
+                state.ox = Math.max(0, Math.min(100, state.ox - (e.clientX - state.lx) / r.width * 100 / state.scale));
+                state.oy = Math.max(0, Math.min(100, state.oy - (e.clientY - state.ly) / r.height * 100 / state.scale));
+                state.lx = e.clientX;
+                state.ly = e.clientY;
+                apply();
+            });
+
+            window.addEventListener('mouseup', () => {
+                if (!state.dragging) return;
+                state.dragging = false;
+                state.dragCell = null;
+                apply();
+            });
+
+            bindHeroImageZoom.state = state;
+            bindHeroImageZoom.apply = apply;
+        }
+
+        bindHeroImageZoom.apply();
+    }
+
+    function resetHeroZoomState() {
+        if (!bindHeroImageZoom.state) return;
+        bindHeroImageZoom.state.scale = 1;
+        bindHeroImageZoom.state.ox = 50;
+        bindHeroImageZoom.state.oy = 50;
+        bindHeroImageZoom.state.dragging = false;
+        bindHeroImageZoom.state.dragCell = null;
+        if (typeof bindHeroImageZoom.apply === 'function') bindHeroImageZoom.apply();
+    }
+
+    bindHeroImageZoom();
+</script>
+    </body>
+</html>
