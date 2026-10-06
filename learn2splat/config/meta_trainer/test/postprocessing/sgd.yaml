@@ -1,0 +1,7 @@
+defaults:
+  - base
+
+name: sgd
+momentum: 0.0
+weight_decay: 0.0
+nesterov: false

@@ -1,0 +1,10 @@
+defaults:
+  - base
+
+name: random
+
+init_num_pts: 100000
+init_extent: 3.0
+scaling_factor: 1.0
+init_opacity: 0.1
+sh_degree: 3

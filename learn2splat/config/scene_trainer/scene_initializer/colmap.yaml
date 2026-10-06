@@ -1,0 +1,24 @@
+defaults:
+  - base
+
+name: colmap
+
+path: null
+normalize_world_space: false
+scaling_factor: 1.0
+init_opacity: 0.1
+sh_degree: 3
+dl3dv_settings: false
+
+train_fixed_gaussians_num: 70_000  # For DDP training, number of Gaussians should be the same across all processes.
+# By default, testing should use all gaussians, but in validation during training, we should still use a fixed number.
+# Should be set in the training script
+eval_fixed_gaussians_num: null
+filter_zero_rgb: false
+points3d_subdir: null  # if set, loads points3D from this subdir instead of the default colmap dir (cameras/images unaffected)
+points3d_ply_filename: null  # if set, loads points from this PLY file (relative to scene dir, e.g. "input.ply") instead of COLMAP binary
+randomize_opacity: false  # When true, randomizes opacity values
+randomize_opacity_distribution: "uniform"  # Options: "uniform" (min to init_opacity) or "gaussian" (around mean)
+randomize_opacity_min: 0.0  # Minimum value for uniform distribution (only used when distribution is "uniform")
+randomize_opacity_std: 0.05  # Standard deviation for gaussian distribution (only used when distribution is "gaussian")
+override_dataset_poses: true  # When true, overrides dataset poses with COLMAP poses

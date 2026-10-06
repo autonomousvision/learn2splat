@@ -1,0 +1,114 @@
+# @package _global_
+# Mixed-dataset training: ONE learn2splat optimizer over two dl3dv view-sampling regimes -- dense
+# (64 context views, colmap init) + sparse (8 context views, resplat_v1 init) -- matching the
+# standalone scripts exactly: learn2splat_dense.sh for dense, learn2splat_sparse.sh for sparse.
+# colmap is the DEFAULT initializer and serves eval (eval_source=dense, 64 views, index_colmap.json).
+# resplat_v1 is a learned per-source override for sparse training scenes only, loaded from a
+# pretrained checkpoint via checkpointing.pretrained_source_initializers.
+#
+# Self-contained on purpose: it does NOT inherit train_dl3dv, whose `override /dataset/view_sampler`
+# has no target once the mixer moves the sampler per-source (dataset.sources.<key>.view_sampler).
+# Consequently the loss/meta_trainer/scene_trainer recipe below mirrors train_l2s_sparse_dl3dv.yaml
+# by hand -- keep the two in sync (or extract a shared dataset-free recipe base as a standalone change).
+defaults:
+  - /dataset@dataset.sources.dense: dl3dv
+  - /dataset@dataset.sources.sparse: dl3dv
+  - /scene_trainer/scene_initializer@scene_trainer.scene_initializers.sparse: resplat_v1
+  - override /dataset: mixed
+  - override /scene_trainer/scene_initializer: colmap      # default → serves dense + eval
+  - override /scene_trainer/scene_optimizer: learn2splat_dense
+  - override /loss: [mse, lpips, deltas, stability]
+  - override /meta_trainer/train/ckpt_buffer_cfg: default
+  - _self_
+
+wandb:
+  name: dl3dv_mixed_dense_sparse
+  tags: [dl3dv, mixed]
+
+data_loader:
+  train:
+    batch_size: 1
+
+meta_trainer:
+  max_steps: 100_000
+  val_check_interval: 0.25
+  train:
+    loss_on_input_views: true
+    loss_on_input_views_num: 4
+    use_ckpt_buffer: true
+  meta_optimizer:
+    lr: 1e-4
+    lr_monodepth: 0.0
+  test:
+    save_at_iters: [0, 1, 5, 10, 50, 100, 200, 300, 400, 500, 1000]
+
+loss:
+  mse:
+    weight: 1.0
+    l1_loss: true
+  lpips:
+    apply_after_step: 0
+    weight: 0.5
+    perceptual_loss: true
+  deltas:
+    weight: 1
+    exclude_by_norm_grad: true
+    exclude_by_norm_grad_opposite: true
+    eps: 1e-8
+    apply_after_step: 100
+
+scene_trainer:
+  train_scene_opt: true
+  num_update_steps: 2000
+  opt_batch_size: 8
+  train_max_refine: 6
+  train_min_refine: 1
+  decoder:
+    rasterize_mode: classic
+    eps2d: 1e-4
+  # colmap SfM settings for the default initializer (dense training scenes + eval)
+  scene_initializer:
+    path: datasets/dl3dv-colmap-sfm
+    dl3dv_settings: true
+    train_min_gaussians_subsample: 0.1
+    train_max_gaussians_subsample: 1.0
+    filter_zero_rgb: true
+
+checkpointing:
+  pretrained_source_initializers:
+    sparse: hf://autonomousvision/learn2splat/resplat_init/checkpoints/epoch_20-step_100000.ckpt
+
+# Dense uses index_colmap.json (colmap SfM required by its initializer); sparse uses the default
+# index.json (resplat_v1 needs no SfM). They differ in view sampling and initializer.
+dataset:
+  eval_source: dense
+  weights: {dense: 1.0, sparse: 1.0}
+  sources:
+    dense:
+      roots: [datasets/dl3dv-480p-chunks]
+      index_name: index_colmap.json
+      near: 0.01
+      far: 200.
+      image_shape: [256, 448]
+      view_sampler:
+        num_context_views: 64
+        num_target_views: 6
+        min_distance_between_context_views: -1
+        max_distance_between_context_views: -1
+        initial_min_distance_between_context_views: -1
+        initial_max_distance_between_context_views: -1
+    sparse:
+      roots: [datasets/dl3dv-480p-chunks]
+      near: 0.01
+      far: 200.
+      image_shape: [256, 448]
+      view_sampler:
+        num_context_views: 8
+        num_target_views: 6
+        min_distance_between_context_views: 24
+        max_distance_between_context_views: 45
+        initial_min_distance_between_context_views: 20
+        initial_max_distance_between_context_views: 30
+
+output_dir: placeholder
+log_slurm_id: true

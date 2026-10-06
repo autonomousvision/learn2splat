@@ -1,0 +1,28 @@
+defaults:
+  - base
+
+name: expon
+
+# 3DGS learning rates (gsplat); means decays, the rest are constant
+lr_data:
+  _base: 1
+  _means: 1.6e-4
+  _scales: 5e-3
+  _quats: 1e-3
+  _opacities: 5e-2
+  _sh0: 2.5e-3
+  _shN: 1.25e-4
+apply_scheduler:
+  _base: true   # gates all params (Bool3DGSCfg.<param> = _base AND _param); must stay true
+  _means: true
+  _scales: false
+  _quats: false
+  _opacities: false
+  _sh0: false
+  _shN: false
+
+# means decay: 1.6e-4 -> 1.6e-6 over the full step budget
+lr_final: 1.6e-6
+lr_delay_steps: 0
+lr_delay_mult: 1.0
+max_steps: 30000  # should be equal to total optimization steps

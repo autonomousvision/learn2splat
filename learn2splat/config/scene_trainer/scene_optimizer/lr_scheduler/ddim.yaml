@@ -1,0 +1,7 @@
+defaults:
+  - base
+
+name: ddim
+T: 1000
+min_lr: 0.0
+s: 0.008

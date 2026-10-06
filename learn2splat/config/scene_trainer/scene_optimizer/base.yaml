@@ -1,0 +1,24 @@
+defaults:
+  - refiner: none
+  - lr_scheduler: none
+
+# gradinents
+input_gradients_chunk_size: -1
+
+# photometric loss driving the gradients: L1 alone, or L1 + 0.2 SSIM when true
+input_gradient_with_ssim_loss: true
+# use squared error (MSE) instead of L1 for the photometric term
+input_gradient_l2_loss: false
+
+# iterative refine
+freeze_mean: false
+freeze_scale: false
+freeze_rotation: false
+freeze_opacity: false
+freeze_sh0: false
+freeze_shN: false
+
+zero_state_on_densify: false
+
+# L1 opacity regularization from 3DGS-MCMC (arXiv:2404.09591); set > 0 (e.g. 1e-3) to enable
+opacity_reg_lambda: 0.0

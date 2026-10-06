@@ -1,0 +1,7 @@
+# @package _global_
+
+defaults:
+  - test_base
+  - override /dataset: colmap
+  - override /scene_trainer/scene_initializer: null    # overridden by init_opts.sh
+  - override /scene_trainer/scene_optimizer: null   # overridden by checkpoint (ours) or CLI (baselines)

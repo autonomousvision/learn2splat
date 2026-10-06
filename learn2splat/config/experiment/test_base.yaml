@@ -1,0 +1,33 @@
+# @package _global_
+# Shared base for all test/eval experiments. Per-dataset configs override the
+# dataset / initializer / optimizer and add any dataset-specific dataset fields.
+
+defaults:
+  - override /scene_trainer/decoder: gsplat
+  - override /meta_trainer/test/postprocessing: none
+
+mode: test
+
+scene_trainer:
+  train_scene_opt: false
+  opt_batch_strategy: fps
+
+checkpointing:
+  pretrained_model: null
+  pretrained_depth: null
+
+meta_trainer:
+  test:
+    compute_scores: true
+    skip_if_outputs_exist: true
+    # The renderer-ready cameras only serve the results viewer, which re-renders from a .ply plus
+    # the cameras. Batch evals save no Gaussians, so there is nothing to pair them with; enable
+    # both alongside save_gaussian when preparing a run for the viewer.
+    save_cameras_json: false
+    save_cameras_npz: false
+    save_render_image: false
+    save_gaussian: false
+    eval_initialization: false
+
+output_dir: placeholder
+log_slurm_id: true

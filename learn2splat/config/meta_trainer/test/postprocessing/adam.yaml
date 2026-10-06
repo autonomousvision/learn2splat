@@ -1,0 +1,10 @@
+defaults:
+  - base
+
+name: adam
+lr_data:
+  _base: 0.001
+betas: [0.9, 0.999]
+weight_decay: 0.0
+amsgrad: false
+eps: 1e-08

@@ -1,0 +1,8 @@
+image_shape: [0, 0]
+background_color: [0.0, 0.0, 0.0]
+cameras_are_circular: false
+overfit_to_scene: null
+opencv_pose_format: false
+pose_align_middle_view: false
+
+test_start_idx: 0

@@ -1,0 +1,6 @@
+name: evaluation
+
+# The index JSON to evaluate on, e.g. assets/evaluation_index_re10k.json. Required: it fixes which
+# views each scene is reconstructed from, so it has to match the dataset being evaluated.
+index_path: ???
+num_context_views: 2

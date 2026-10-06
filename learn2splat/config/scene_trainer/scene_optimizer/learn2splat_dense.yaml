@@ -1,0 +1,8 @@
+defaults:
+  - learn2splat
+
+# Dense variant (64-view SfM/COLMAP init): the optimizer state is initialized as random
+# features rather than the sparse model's constant zero state.
+init_state_wo_features: true
+init_state_type: random
+init_state_scale: 1.0

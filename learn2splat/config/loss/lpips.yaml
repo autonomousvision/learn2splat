@@ -1,0 +1,6 @@
+lpips:
+  weight: 0.05
+  apply_after_step: 150_000
+  perceptual_loss: false
+  half_res: false
+  bf16: true  # run the custom PerceptualLoss VGG in bf16 (faster; only applies when perceptual_loss)

@@ -1,0 +1,50 @@
+# @package _global_
+
+# A shared config for training on dl3dv, used by both resplat initializer, resplat optimizer, and learn2splat optimizer.
+
+defaults:
+  - override /dataset: dl3dv
+  - override /scene_trainer/scene_initializer: resplat_v1
+  - override /scene_trainer/scene_optimizer: learn2splat
+  - override /loss: [ mse, lpips ]
+  - override /dataset/view_sampler: boundedv2_360
+
+wandb:
+  name: dl3dv
+  tags: [ dl3dv, 270x480 ]
+
+data_loader:
+  train:
+    batch_size: 1
+
+meta_trainer:
+  max_steps: 50_000
+  val_check_interval: 0.25
+  test:
+    save_every_freq: [ 1, 10, 100, 500 ]
+    save_every_steps: [ 0, 10, 100, 1000 ]
+
+# lpips loss
+loss:
+  mse:
+    l1_loss: true
+  lpips:
+    apply_after_step: 0
+    weight: 0.5
+    perceptual_loss: true
+
+dataset:
+  roots: [ datasets/dl3dv-480p-chunks ]
+  near: 0.01
+  far: 200.
+  image_shape: [ 256, 448 ]
+  view_sampler:
+    num_context_views: 8
+    num_target_views: 6
+    min_distance_between_context_views: 24
+    max_distance_between_context_views: 45
+    initial_min_distance_between_context_views: 20
+    initial_max_distance_between_context_views: 30
+
+output_dir: placeholder
+log_slurm_id: true

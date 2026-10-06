@@ -1,0 +1,7 @@
+# Mixed-dataset group. The `sources` (per-source dataset cfgs) and `weights` are
+# composed by an experiment via Hydra @package (see experiment/train_mixed.yaml); do not seed them
+# here. No top-level `view_sampler`/`image_shape`/`roots`: those are per-source (each source cfg
+# carries its own). `background_color` is the single value the decoder uses.
+name: mixed
+background_color: [0.0, 0.0, 0.0]
+eval_source: ???   # key into `sources`; drives val/test and train-time eval. Set by the experiment.

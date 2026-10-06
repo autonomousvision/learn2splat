@@ -1,0 +1,2 @@
+ssim:
+  weight: 0.2  # default in 3dgs

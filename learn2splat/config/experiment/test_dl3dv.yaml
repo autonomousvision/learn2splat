@@ -1,0 +1,14 @@
+# @package _global_
+
+defaults:
+  - test_base
+  - override /dataset: dl3dv
+  - override /scene_trainer/scene_initializer: null   # overridden by checkpoint (ours) or init_opts.sh
+  - override /scene_trainer/scene_optimizer: null   # overridden by checkpoint (ours) or CLI (baselines)
+
+dataset:
+  roots: [datasets/dl3dv-480p-chunks]
+  near: 0.01
+  far: 200.
+  opencv_pose_format: false
+  image_shape: [256, 448]

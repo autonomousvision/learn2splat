@@ -1,0 +1,51 @@
+name: mcmc
+
+do_densify: true
+do_prune: true
+do_opacity_reset: true
+
+# Population growth cap. -1 disables growth (add_new is a no-op).
+# Set to e.g. 1000000 to allow growing up to 1M Gaussians.
+cap_max: -1
+noise_lr: 5e5
+
+# scheduling
+pause_refine_after_reset: 0
+refine_every: 100
+reset_every: 999999999  # effectively disable resets
+refine_start_iter: 500
+refine_stop_iter: 25000
+refine_scale2d_stop_iter: 0  # disable scale2d
+
+# thresholds
+grow_grad2d: 0.0  # not used
+grow_scale3d: 0.0  # aka. percent_dense, not used
+prune_scale3d: 0.0  # not used
+prune_scale2d: null  # screen-space big-point pruning off
+grow_scale2d: 0.0  # not used
+min_opacity: 0.005
+
+# Pruning parameters
+prune_zero_radii: false
+
+# Slightly reduce opacity every few steps
+reduce_opacity: false
+reduce_factor: 0.0  # not used
+reduce_every: 0  # not used
+
+# Fallback means lr for noise injection when optimizer has no means_lr_scheduler (e.g. Learn2SplatOptimizer).
+# Original paper: means_lr (~1.6e-4) * noise_lr (5e5) ≈ 80 world units of noise.
+fallback_means_lr: 1.6e-4
+
+# Per-op latent-state init for densified Gaussians: copy | zero | random (governs the learned latent
+# state only; Adam moments follow FastGS). "copy" relocate reproduces the old relocate_copy_state: true.
+clone_gaussian_state: copy
+split_gaussian_state: copy
+relocate_gaussian_state: copy
+add_gaussian_state: random
+
+# Cap (in scale units) applied to the *noise-only* covariance computation. Does NOT change the
+# rendered Gaussian scales. Needed for knn_based whose network saturates clamp_max_scale,
+# which produces covariances 10²-10⁴× larger than vanilla's and makes the noise overflow the
+# renderer's tile-binning math (silent CUDA OOB downstream). Tune to ~scene_scale / 5.
+noise_scale_cap: 1.0

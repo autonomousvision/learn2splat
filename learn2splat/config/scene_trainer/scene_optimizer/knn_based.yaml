@@ -1,0 +1,179 @@
+defaults:
+  - base
+
+name: knn_based
+
+# iterative refine
+no_render_error: false
+num_basic_blocks: 4
+num_blocks: 1
+concat_init_state: false
+replace_init_state: false
+state_channels: 256
+block_rmsnorm: false
+block_layernorm: false
+pt_qk_norm: false
+norm_pt_block: false
+delta_gaussian_multiple: 1
+residual_init_state: false
+clamp_max_scale: 3.0
+clamp_min_scale: 1e-6
+clamp_min_raw_scales: -1e10
+clamp_max_raw_scales: 1e10
+# Bound (absolute value) applied ONLY to the position copy fed into the KNN attention, never to the
+# stored means. null = off. When set (eval only), a diverged Gaussian cloud is clamped just for the
+# KNN so its CUDA kernel cannot overflow/crash, letting an unstable baseline run finish (e.g. to
+# render) without moving the real Gaussians (which would flatter the baseline).
+knn_pos_clamp: null
+clamp_min_raw_opacities: -7
+clamp_max_raw_opacities: 7
+clamp_min_sh0: -1e10
+clamp_max_sh0: 1e10
+clamp_min_shs: -1e10
+clamp_max_shs: 1e10
+clamp_shs_soft: false
+
+attn_proj_channels: 64
+no_knn_attn: false
+no_tran_block_norm: false
+tran_block_act: gelu
+multi_gaussian_scale_smaller: false
+init_gaussian_multiple: 1
+condition_pt_feature: true
+same_num_points: false
+input_error_rgb_no_shuffle: false
+input_error_cache_resnet_feature: false
+
+# Per-Gaussian latent state at step 0. With a learned initializer it can be projected from that
+# initializer's features; the two settings below apply only when there are none (a COLMAP or
+# point-cloud init, or init_state_wo_features). A "constant" times scale 0 means a zero state.
+init_state_wo_features: false
+init_state_type: constant
+init_state_scale: 0
+
+# point transformer
+pt_heads: 1
+
+# refine with mv attention
+with_mv_attn: false
+with_mv_attn_lowres: false
+no_mv_attn: false
+mv_attn_conv_with_norm: false
+mv_shuffle_attn: false
+mv_attn_with_pos_enc: false
+shuffle_attn_no_norm: false
+mv_unimatch_attn: false
+knn_samples: 16
+max_active_gaussians: 100_000
+
+# KNN
+use_fused_attn: true  # fused KNN gather + attention CUDA kernel (faster, less memory)
+knn_idx_update_every: 1
+# neighbour search backend: "simple_knn" (default, Morton/box-pruned) or "pointops" (brute force,
+# for comparison). Identical neighbour sets.
+knn_backend: simple_knn
+
+# inputs
+input_alpha: false
+input_depth: false
+input_depth_smooth_error: false
+input_error: false
+
+input_error_add_rgb_feature: false
+input_error_resnet_feature: true
+input_error_no_freeze_resnet_feature: false
+input_error_shallow_resnet_feature: false
+input_error_resnet_feature_layers: 18
+
+# cross attention render error
+input_error_additional_cross_attn: false
+input_error_num_intermediate_views: 8
+
+# add global attention to the rendered error to exchange info across views
+input_error_mv_attn: false
+input_error_mv_attn_blocks: 2
+
+# refine camera-frame raw quaternions and rotate them to world per view (released ReSplat convention);
+# the initializer must set camera_frame_quats too
+camera_frame_quats: false
+
+# number of views to render error
+input_error_num_views: 0
+
+# render error based on remaining context views
+input_error_remain_context: false
+input_error_merge_remain_context: false
+input_error_warp_remain_context: false
+input_error_random_num_remain_context: false
+input_error_num_remain_context_test: 0
+
+
+
+# explicit gradient
+input_gradient: false
+input_gradient_log: false
+input_gradient_log_clip_deltas: 0.001
+input_gradient_scale: 1.
+residual_grad_scale: 1.
+input_gradient_with_ssim_loss: false
+input_gradient_same_loss: false
+input_gradient_loss_reduction: mean
+scale_residual_grads: false
+
+train_global_only: false
+
+# random size refine
+# update more for low resolution, less for high
+random_step_with_size: false
+
+
+use_amp: true
+pt_head_amp: true
+pt_update_amp: true
+
+use_checkpointing: false
+recurrent_use_checkpointing: false
+
+# Normalizing input
+input_gradient_normalize: false
+input_gradient_normalize_type: layer
+input_normalize_state: false
+input_normalize_gaussians: false
+
+# Scaling
+residual_state: false
+predict_state_scale: false
+predict_state_scale_norm: false
+
+# Update head
+delta_head_concat_img: false
+delta_head_layer_num: 2
+delta_head_act: gelu
+delta_head_final_act: identity
+
+delta_head_scalar_scale: false
+delta_head_scalar_scale_act: relu
+
+# Per-parameter-group heads (Feature A): separate heads per param group, each with own normalize+scale
+delta_head_per_param_heads: false
+delta_head_per_param_hidden_dim: 48  # tuned so total params ≈ baseline head (~81K)
+# Per-parameter scalar scales (Feature B): per-group scalar scales (requires delta_head_scalar_scale=true)
+delta_head_per_param_scales: false
+
+opt_scales_before_act: false
+
+# Preprocessing the init gaussians
+scale_initial_opacities: 1.0
+sh_d: null
+# Hold SH bands above this degree at zero (DC + kept bands stay trainable) so a
+# checkpoint trained at full sh_d can be evaluated at a lower effective SH degree.
+# null = use all bands; 0 = DC color only.
+cap_sh_degree: null
+
+update_only_nonzero_grad: false
+
+# time encoding
+use_time_encoding: false
+time_encoding_max_steps: 2000
+# "frequency" (NeRF-style band encoding) or "ddpm" (G3R/QuickSplat sinusoidal timestep embedding)
+time_encoding_type: frequency

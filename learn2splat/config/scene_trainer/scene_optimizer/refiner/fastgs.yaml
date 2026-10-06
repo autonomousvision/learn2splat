@@ -1,0 +1,51 @@
+name: fastgs
+
+do_densify: true
+do_prune: true
+do_opacity_reset: true
+
+#
+cap_max: -1  # no cap
+
+# scheduling (FastGS train_base.sh: densification_interval 500, densify 500->15000, reset every 3000)
+pause_refine_after_reset: 0
+refine_every: 500
+reset_every: 3000
+refine_start_iter: 500
+refine_stop_iter: 15000
+refine_scale2d_stop_iter: 0
+
+# thresholds
+grow_grad2d: 0.0002  # FastGS grad_thresh (clone, normal screen-grad)
+grow_scale3d: 0.001  # FastGS dense (clone<->split size split); FastGS lowers this from 3DGS's 0.01
+prune_scale3d: 0.1
+prune_scale2d: null  # screen-space big-point pruning off (FastGS big_points_vs is a no-op; our radii2d over-flags degenerate splats)
+grow_scale2d: 0.05
+min_opacity: 0.005
+
+# Pruning parameters
+prune_zero_radii: false
+
+# Slightly reduce opacity every few steps
+reduce_opacity: false
+reduce_factor: 0.0  # not used
+reduce_every: 0  # not used
+
+fallback_means_lr: 0.0  # unused (noise_lr=0.0)
+
+# Per-op latent-state init for densified Gaussians: copy | zero | random (governs the learned latent
+# state only; Adam moments follow FastGS). See adc/base.py.
+clone_gaussian_state: copy
+split_gaussian_state: copy
+relocate_gaussian_state: copy
+add_gaussian_state: random
+
+# FastGS-specific (see adc/fastgs.py)
+grad_abs_thresh: 0.0012  # Abs-GS split threshold (split signal)
+importance_thresh: 5     # min averaged high-error view count to densify
+prune_budget_frac: 0.5   # fraction of eligible Gaussians pruned per step
+opacity_clamp: 0.8       # opacity ceiling applied after each densification
+num_score_cams: 10       # context views sampled to score each densification (multi-view render)
+loss_thresh: 0.1         # normalized-L1 threshold flagging a high-error pixel in the score maps
+final_prune_min_opacity: 0.1   # phase-2 (>refine_stop_iter) opacity floor, every reset_every
+final_prune_score_thresh: 0.9  # phase-2: also prune Gaussians whose multi-view pruning_score > this

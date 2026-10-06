@@ -1,0 +1,4 @@
+name: fastgs
+scale_invariant: false
+use_covariances: false
+mult: 0.5

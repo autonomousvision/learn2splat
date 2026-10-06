@@ -1,0 +1,8 @@
+stability:
+  weight: 1.0
+  # Also penalize inputs optimized on per-step view subsets (not fully tested in training).
+  subset_aware: false
+  # Apply stability only to target views (skip context). Matches the dense setting, where context
+  # views are subsampled and thus already skipped; keeps the effective penalty consistent across
+  # dense/sparse instead of ~doubling it in the sparse (all-context-present) case.
+  targets_only: false

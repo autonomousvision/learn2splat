@@ -1,0 +1,24 @@
+steps: 2000
+compute_metrics_every: 100
+lr_data:
+  _base: 1
+  _means: 1
+  _scales: 1
+  _opacities: 1
+  _quats: 1
+  _sh0: 1
+  _shN: 1
+scheduler: null
+scheduler_warm_up_ratio: 0.01
+prior_steps: 0
+
+# Means LR scheduling (defaults match vanilla optimizer)
+means_lr_final_ratio: 0.0625    # ratio of final/initial means LR (vanilla: 1e-5 / 1.6e-4)
+means_lr_delay_mult: 0.01       # ramp-up delay multiplier (vanilla default)
+means_lr_scale_by_scene_extent: true
+
+# View chunking for gradient accumulation
+chunk_size: -1  # -1 = all views at once
+
+# ADC (Adaptive Density Control) - null = disabled
+adc: null

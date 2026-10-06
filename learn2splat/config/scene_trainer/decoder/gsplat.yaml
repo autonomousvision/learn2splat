@@ -1,0 +1,4 @@
+name: gsplat
+use_covariances: false
+rasterize_mode: antialiased
+eps2d: 0.3

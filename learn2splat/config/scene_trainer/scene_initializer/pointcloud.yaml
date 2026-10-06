@@ -1,0 +1,17 @@
+defaults:
+  - base
+
+name: pointcloud
+
+path: null
+scaling_factor: 1.0
+init_opacity: 0.1
+sh_degree: 3
+filter_zero_rgb: true
+# Transform from PLY coordinate system to camera coordinate system.
+# For ScanNet++/NeRFstudio: (x,y,z) -> (y,x,-z)
+world_transform:
+  - [0, 1, 0, 0]
+  - [1, 0, 0, 0]
+  - [0, 0, -1, 0]
+  - [0, 0, 0, 1]

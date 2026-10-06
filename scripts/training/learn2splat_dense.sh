@@ -1,0 +1,27 @@
+# Training scripts for dl3dv with 8 input views
+python -m learn2splat.main +experiment=train_l2s_sparse_dl3dv \
+meta_trainer.num_sanity_val_steps=1 \
+meta_trainer.train.eval_data_length=5 \
+meta_trainer.train.loss_on_target_views_num=6 \
+meta_trainer.max_steps=100000 \
+dataset.index_name=index_colmap.json \
+dataset.view_sampler.num_context_views=64 \
+dataset.view_sampler.num_target_views=6 \
+dataset.view_sampler.min_distance_between_context_views=-1 \
+dataset.view_sampler.max_distance_between_context_views=-1 \
+dataset.view_sampler.initial_min_distance_between_context_views=-1 \
+dataset.view_sampler.initial_max_distance_between_context_views=-1 \
+checkpointing.pretrained_initializer=null \
+scene_trainer/scene_initializer=colmap \
+scene_trainer/scene_optimizer=learn2splat_dense \
+scene_trainer.scene_initializer.path=datasets/dl3dv-colmap-sfm \
+scene_trainer.scene_initializer.dl3dv_settings=true \
+scene_trainer.scene_initializer.train_min_gaussians_subsample=0.1 \
+scene_trainer.scene_initializer.train_max_gaussians_subsample=1.0 \
+scene_trainer.scene_initializer.filter_zero_rgb=true \
+scene_trainer.scene_initializer.eval_fixed_gaussians_num=70_000 \
+wandb.project=learn2splat \
+wandb.notes="" \
+output_dir='checkpoints/learn2splat/dl3dv/dense_64views_sfm_init' \
+meta_trainer.test.save_at_iters=[0,1,5,10,50,100,200,300,400,500,1000] \
+log_slurm_id=true

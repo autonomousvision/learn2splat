@@ -1,0 +1,6 @@
+name: dense
+
+target_every: 8
+context_every: -1
+num_target_views: -1
+num_context_views: -1

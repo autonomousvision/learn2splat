@@ -1,0 +1,22 @@
+# @package _global_
+
+defaults:
+  - test_colmap
+  - override /scene_trainer/scene_initializer: colmap
+
+# MipNeRF-360: the 9 COLMAP scenes are read in place, every 8th view held out as a target
+# (the dense view sampler and its target_every=8 are already the colmap defaults).
+dataset:
+  roots: datasets/mipnerf360
+  subsample_factor: 4
+
+scene_trainer:
+  scene_initializer:
+    path: datasets/mipnerf360
+  num_update_steps: 2000
+  opt_batch_size: 8
+  # Views per render call for the init and saved-step renders. These scenes carry a few hundred
+  # views, and rasterizing them in one call needs a single buffer of
+  # views x H x W x 4 channels x 4 bytes, more than one allocation can serve. Chunking only adds
+  # kernel launches on renders that are not timed, so lower it further on a smaller GPU.
+  iter_batch_size: 32

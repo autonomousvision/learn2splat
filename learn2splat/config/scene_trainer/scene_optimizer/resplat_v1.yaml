@@ -1,0 +1,6 @@
+defaults:
+  - knn_based
+
+name: resplat_v1
+input_error: true
+input_error_mv_attn: true

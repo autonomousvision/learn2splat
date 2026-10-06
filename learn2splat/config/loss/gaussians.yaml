@@ -1,0 +1,6 @@
+gaussians:
+  weight: 1.0
+  weight_scales: 0.01
+  weight_opacities: 0.0
+  weight_sh: 0.005
+  sh_alpha: 1.0  # 1.0 = uniform; >1.0 = penalize higher SH degrees more

@@ -1,0 +1,12 @@
+defaults:
+  - base
+  - adam
+
+lr_data:
+  _base: 1
+  _means: 1.6e-4
+  _scales: 5e-3
+  _opacities: 5e-2
+  _quats: 1e-3
+  _sh0: 2.5e-3
+  _shN: 1.25e-4 #  2.5e-3 / 20

@@ -1,0 +1,33 @@
+# @package _global_
+
+defaults:
+  - train_dl3dv
+  - override /meta_trainer/train/ckpt_buffer_cfg: default
+  - override /loss: [ mse, lpips ]
+
+loss:
+  mse:
+    weight: 1.0
+  lpips:
+    apply_after_step: 0
+    weight: 0.5
+    perceptual_loss: true
+
+meta_trainer:
+  train:
+    loss_on_input_views: true
+    loss_on_input_views_num: 4
+    use_ckpt_buffer: true
+  meta_optimizer:
+    lr: 1e-4
+    lr_monodepth: 0.0
+
+scene_trainer:
+  train_scene_opt: true
+  num_update_steps: 4
+  train_max_refine: 6
+  train_min_refine: 1
+
+checkpointing:
+  pretrained_initializer: hf://autonomousvision/learn2splat/resplat_init/checkpoints/epoch_20-step_100000.ckpt  # ReSplat initializer
+  no_strict_load: false

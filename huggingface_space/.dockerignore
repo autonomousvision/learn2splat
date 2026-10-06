@@ -1,0 +1,28 @@
+# Build-context / image trimming for the Learn2Splat demo Space.
+# The Dockerfile needs: demo.py, learn2splat/, submodules/, requirements.txt,
+# pyproject.toml, LICENSE — keep those; drop everything below.
+
+# Secrets — never copy into the image.
+.env
+.env.*
+/wandb/
+
+# Git + Python build droppings.
+.git/
+.gitignore
+**/__pycache__/
+**/*.pyc
+**/*.egg-info/
+submodules/*/build/
+
+# Large runtime artefacts — fetched into the container on first run.
+/data/
+/checkpoints/
+/results/
+
+# Repo material the demo doesn't use.
+/assets/
+/tests/
+/scripts/
+/todo/
+huggingface_space/

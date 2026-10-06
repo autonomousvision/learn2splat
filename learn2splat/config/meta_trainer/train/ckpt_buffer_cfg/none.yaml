@@ -1,0 +1,12 @@
+capacity: 0
+sample_batch_size: 1
+sample_prob: 0.0
+insert_prob: 0.0
+return_prob: 0.0
+rollout: false
+rollout_min_steps: 0
+rollout_max_steps: 0
+rollout_grow: 0
+max_t: null
+push_only_if_not_full: false
+remove_strategy_when_full: oldest

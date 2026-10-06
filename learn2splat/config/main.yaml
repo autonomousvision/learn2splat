@@ -1,0 +1,172 @@
+defaults:
+  - loss: [ mse ]
+  - dataset: null
+  - scene_trainer/scene_initializer: null
+  - scene_trainer/scene_optimizer: null
+  - scene_trainer/decoder: gsplat
+  - meta_trainer/test/postprocessing: none
+  - meta_trainer/train/ckpt_buffer_cfg: none
+
+wandb:
+  project: learn2splat
+  entity: null
+  name: placeholder
+  mode: online
+  id: null
+  notes: null
+
+mode: train
+
+data_loader:
+  train:
+    num_workers: 10
+    persistent_workers: true
+    batch_size: 4
+    seed: 1234
+  test:
+    num_workers: 4
+    persistent_workers: false
+    batch_size: 1
+    seed: 2345
+  val:
+    num_workers: 1
+    persistent_workers: true
+    batch_size: 1
+    seed: 3456
+
+checkpointing:
+  load: null
+  every_n_train_steps: 1000
+  save_top_k: 5
+  pretrained_model: null
+  pretrained_model_rel_dir: ${checkpoint_rel_dir:${checkpointing.pretrained_model}}
+  pretrained_monodepth: null
+  pretrained_mvdepth: null
+  pretrained_depth: null
+  pretrained_scale_predictor: null
+  pretrained_depth_teacher: null
+  no_strict_load: false
+  resume: false
+  no_resume_upsampler: false
+  partial_load: false
+  freeze_mono_vit: false
+  resume_update_module: null
+  pretrained_initializer: null
+  pretrained_optimizer: null
+  pretrained_source_initializers: null
+  load_existing_cfg: false
+
+seed: 111123
+
+meta_trainer:
+  max_steps: -1
+  val_check_interval: 0.5
+  gradient_clip_val: 0.5
+  num_sanity_val_steps: 2
+  eval_index: null
+  limit_test_batches: 1.0
+  limit_train_batches: 1.0
+  num_nodes: 1
+  meta_optimizer:
+    lr: 2.e-4
+    lr_monodepth: 2.e-6
+    lr_depth: 0.
+    warm_up_steps: 2000
+    weight_decay: 0.01
+    warm_up_ratio: 0.01
+    adamw_8bit: false
+  train:
+    extended_visualization: false
+    print_log_every_n_steps: 100
+    eval_model_every_n_val: 2  # quantitative evaluation every n val
+    eval_data_length: 999999
+    eval_save_model: true
+    intermediate_loss_weight: 0.9
+    no_viz_video: false
+    eval_depth: false
+    no_log_video: true
+    eval_render_depth: false
+    viz_render_depth: false
+    use_gt_depth_range: false
+    loss_on_input_views: false
+    loss_on_target_views: true
+    loss_on_input_views_num: 1
+    loss_on_target_views_num: -1
+    train_window_size: null
+    viz_depth_separate: false
+    # L2 weight decay on Gaussian properties (meta-loss)
+    scale_l2_loss_weight: 0.
+    sh_l2_loss_weight: 0.
+    opacity_l2_loss_weight: 0.
+    use_ckpt_buffer: false
+  test:
+    output_path: null
+    compute_scores: true
+    compute_scores_metrics: [psnr,ssim,lpips]
+    metrics_batch_size: 32
+    eval_initialization: true
+    save_render_image: false
+    save_render_image_last_only: false
+    save_gt_image: false
+    save_render_depth: false
+    save_gt_depth: false
+    save_init_pred_depth: false
+    save_error_image: false
+    save_video: false
+    save_video_optim: false
+    save_video_view_index: 0
+    save_video_frame_repeat: 1
+    save_video_orbit: false
+    save_video_orbit_steps: null
+    save_video_orbit_with_optim: false
+    save_video_optim_orbit: false
+    save_video_optim_orbit_steps: null
+    save_video_orbit_span: 50
+    save_video_orbit_sweeps: 3
+    save_video_orbit_frame_repeat: 3
+    save_video_orbit_fitted_path: false
+    save_video_orbit_fitted_path_frames: 60
+    save_video_orbit_fitted_path_span_deg: 120
+    save_gaussian: false
+    save_gaussian_last_only: false
+    save_poses: false
+    save_cameras_json: true
+    save_cameras_npz: true
+    render_chunk_size: null
+    stabilize_camera: false
+    stab_camera_kernel: 50
+    eval_context_views: false
+    inference_window_size: null
+    save_at_iters: null
+    save_every_freq: null
+    save_every_steps: null
+    skip_if_outputs_exist: false
+    scenes_filter: null
+
+scene_trainer:
+  use_fsdp: false
+  train_scene_opt: false
+  train_min_refine: 0
+  train_max_refine: 0
+  num_update_steps: 0
+  iter_batch_size: -1
+  opt_batch_size: -1
+  opt_batch_size_min: 0
+  opt_batch_size_max: 0
+  opt_batch_strategy: random
+  sh_degree_interval: 0
+
+output_dir: null
+
+use_plugins: false
+
+log_slurm_id: false
+
+version: null
+
+profiling:
+  # one of: none, basic, advanced, pytorch
+  # advanced profiling requires pytorch-lightning-2.5.3 (default: 2.4.0)
+  mode: none
+
+debug_cfg: false

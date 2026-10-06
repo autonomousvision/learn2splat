@@ -1,0 +1,9 @@
+per_pixel: false
+per_view: false
+
+train_min_gaussians_subsample: null
+train_max_gaussians_subsample: null
+eval_min_gaussians_subsample: null
+eval_max_gaussians_subsample: null
+train_fixed_gaussians_num: null
+eval_fixed_gaussians_num: null

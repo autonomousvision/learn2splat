@@ -1,0 +1,4 @@
+sgd:
+  weight: 1.0
+  l1_loss: false
+  clamp_large_error: 0.0

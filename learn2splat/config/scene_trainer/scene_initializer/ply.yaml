@@ -1,0 +1,8 @@
+defaults:
+  - base
+
+name: ply
+
+path: null
+sh_degree: 3
+ply_filename: "gaussians.ply"

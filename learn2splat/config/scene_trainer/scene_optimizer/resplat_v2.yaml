@@ -1,0 +1,17 @@
+defaults:
+  - knn_based
+
+name: resplat_v2
+input_error: true
+input_error_mv_attn: true
+input_error_mv_attn_blocks: 1  # released ReSplat checkpoints have one error-attention block
+input_error_add_rgb_feature: true
+camera_frame_quats: true
+knn_samples: 8
+state_channels: 512
+residual_state: true
+delta_head_layer_num: 4
+# original ReSplat clamps: raw opacities only bounded by logit(eps=1e-6) (about 13.8), scales only from below
+clamp_min_raw_opacities: -14
+clamp_max_raw_opacities: 14
+clamp_max_scale: 1e10

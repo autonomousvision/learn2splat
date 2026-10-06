@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "learn2splat"
+version = "0.1.0"
+description = "Learn2Splat: a meta-learned optimizer for 3D Gaussian Splatting."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Naama Pearl" },
+    { name = "Stefano Esposito" },
+    { name = "Haofei Xu" },
+    { name = "Amit Peleg" },
+    { name = "Patricia Gschoßmann" },
+    { name = "Lorenzo Porzi" },
+    { name = "Peter Kontschieder" },
+    { name = "Gerard Pons-Moll" },
+    { name = "Andreas Geiger" },
+]
+keywords = ["gaussian-splatting", "3d-reconstruction", "novel-view-synthesis", "depth-estimation"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+# Runtime deps are sourced from requirements.txt (single source of truth,
+# also used by setup.sh) — see [tool.setuptools.dynamic] below.
+#
+# NOT covered here (cannot be expressed as plain PyPI deps — install via
+# setup.sh or the documented steps):
+#   - torch / torchvision / torchaudio  (CUDA-specific wheel index)
+#   - gsplat, nerfacc                   (built from git against installed torch)
+#   - submodules/* CUDA extensions      (simple-knn, fused-ssim, pointops,
+#                                        fused_knn_attn, pycolmap)
+dynamic = ["dependencies"]
+
+[project.urls]
+Homepage = "https://autonomousvision.github.io/learn2splat/"
+Repository = "https://github.com/autonomousvision/learn2splat"
+
+[project.scripts]
+learn2splat = "learn2splat.main:main"
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools.packages.find]
+# Flat layout: only the `learn2splat` package ships. Excludes tests/, scripts/ and
+# submodules/ at the repo root, and the vendored non-package CUDA dirs inside
+# learn2splat/ (no __init__.py / hyphenated).
+include = ["learn2splat*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+# Hydra configs live inside the package and must ship in the wheel so the
+# `learn2splat` CLI works after `pip install` from any directory.
+# (Eval-index assets are intentionally NOT bundled — see docs / LEARN2SPLAT_ASSETS.)
+learn2splat = ["config/**/*.yaml", "config/**/*.yml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

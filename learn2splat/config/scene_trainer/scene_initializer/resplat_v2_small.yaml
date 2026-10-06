@@ -1,0 +1,9 @@
+# ReSplat v2 at one model size. These match the architectures of ReSplat's released
+# checkpoints (haofeixu/resplat on Hugging Face), which ship as bare .pth files with no
+# config next to them, so the size has to be selected here.
+
+defaults:
+  - resplat_v2
+
+monodepth_vit_type: vits
+gaussian_regressor_channels: 256

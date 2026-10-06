@@ -1,0 +1,42 @@
+defaults:
+  - knn_based
+
+name: l2s
+
+# General optimization settings
+opt_scales_before_act: true
+# Scales are refined in log space, so clamp in log space too.
+clamp_min_raw_scales: -8.0
+clamp_max_raw_scales: 1.0986  # ln(3.0)
+sh_d: 16  # should be the default, but just in case
+
+# SH coefficients are clamped to a fixed range during refinement.
+clamp_min_shs: -2.0
+clamp_max_shs: 2.0
+
+# KNN neighborhood size for the point-transformer attention.
+knn_samples: 4
+
+# Input gradient settings
+input_gradient: true
+input_gradient_normalize: true
+input_gradient_normalize_type: adam
+input_gradient_with_ssim_loss: true
+# Average the input gradient over pixels, then sum over the supervised views.
+input_gradient_loss_reduction: mean_pixels_sum_views
+
+# Freeze zero-grad gaussians ❄️($G_{∇=0})
+update_only_nonzero_grad: true
+
+# state scale
+predict_state_scale: true
+
+# Delta scale
+delta_head_scalar_scale: true
+delta_head_scalar_scale_act: relu  # should be the default, but just in case
+
+
+
+
+
+

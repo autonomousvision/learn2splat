@@ -1,0 +1,13 @@
+defaults:
+  - base
+  - view_sampler: ids
+
+name: scannet
+roots: datasets/quicksplat_spp_data_processed
+scene_name: null
+split: test
+subsample_factor: 1
+num_context_views: 100
+filter_bad_frames: true
+
+crop_size: null

@@ -1,0 +1,143 @@
+defaults:
+  - base
+
+per_pixel: true
+per_view: true
+
+name: resplat_v1
+
+num_depth_candidates: 128
+num_surfaces: 1
+
+gaussians_per_pixel: 1
+
+gaussian_adapter:
+  gaussian_scale_min: 0.5
+  gaussian_scale_max: 0.3
+  sh_degree: 3
+  exp_scale: false
+  softplus_scale: true
+  clamp_min_scale: 1e-6
+  scale_detach_depth: false
+  exp_scale_bias: 4.
+  no_rotate_sh: true
+  no_sh_mask: true
+  init_rotation_identity: false
+
+d_feature: 128
+
+visualizer:
+  num_samples: 8
+  min_resolution: 256
+  export_ply: false
+
+unimatch_weights_path: "pretrained/gmdepth-scale1-resumeflowthings-scannet-5d9d7964.pth"
+multiview_trans_attn_split: 2
+downscale_factor: 4
+shim_patch_size: 16
+
+local_mv_match: 2
+
+# monodepth
+monodepth_vit_type: vits
+
+# return depth
+return_depth: true
+
+# mv_unimatch
+num_scales: 1
+upsample_factor: 8
+lowest_feature_resolution: 8
+depth_unet_channels: 128
+grid_sample_disable_cudnn: false
+
+# depthsplat color branch
+large_gaussian_head: false
+color_large_unet: false
+init_sh_input_img: true
+feature_upsampler_channels: 64
+gaussian_regressor_channels: 256
+unet_gaussian_regressor: false
+resnet_gaussian_regressor: false
+
+# only depth
+train_depth_only: false
+
+# point transformer
+pt_head: true
+pt_heads: 1
+init_pt_with_mv_attn: false
+init_pt_with_mv_attn_lowres: false
+pt_head_channels: null
+pt_head_concat_img: false
+pt_head_conv: false
+attn_proj_channels: 64
+knn_samples: 16
+post_norm: false
+no_rpe: true
+no_knn_attn: false
+num_blocks: 4
+add_pt_residual: true
+
+# freeze depth
+freeze_depth: false
+use_gt_depth: false
+
+# separate depth & color
+separate_depth_color: false
+separate_depth_type: small
+separate_depth_gaussian_scale: false
+
+sample_log_depth: true
+bilinear_upsample_depth: false
+no_upsample_depth: false
+return_lowres_depth: false
+
+# latent gaussian instead of pixel aligned gaussians
+latent_gs: true
+latent_downsample: 4
+fixed_latent_size: true
+latent_gs_img_interp: area
+dpt_head_depth: false
+latent_dpt_upsampler: false
+latent_dpt_upsampler_no_concat: false
+light_dpt_feature: false
+avgpool_depth: false
+nearest_down_depth: false
+
+# predict scene scale with a pretrained depth model
+predict_scale: false
+norm_by_points: false
+no_pred_depth_range: false
+
+point_dist_init_gaussian_scale: false
+
+resizeconv_upsampler: false
+
+# handle high resolution images
+depth_pred_half_res: false
+
+use_amp: true
+pt_head_amp: true
+
+use_fsdp: false
+use_checkpointing: false
+init_use_checkpointing: false
+
+# refactor: new gaussian parameter order
+rotate_quat_to_world: false
+refine_rotate_quat_to_world: false
+refine_no_use_covariance: false
+# keep camera-frame raw quaternions in rotations_unnorm (released ReSplat optimizer convention)
+camera_frame_quats: false
+latent_new_reshape: false
+
+
+
+no_pixel_offset: false
+
+init_gaussian_multiple: 1
+deform_sample_depth: false
+deform_sample_depth_debug: false
+
+

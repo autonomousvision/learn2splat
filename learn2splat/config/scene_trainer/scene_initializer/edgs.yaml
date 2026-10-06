@@ -1,0 +1,11 @@
+defaults:
+  - base
+
+name: edgs
+
+sh_degree: 3
+init_opacity: 0.5
+scaling_factor: 0.5
+roma_model_type: outdoors
+sample_init_gaussians: -1
+cache_dir: cache/edgs

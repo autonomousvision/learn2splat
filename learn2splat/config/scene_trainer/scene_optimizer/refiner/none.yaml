@@ -1,0 +1,41 @@
+name: none
+
+do_densify: false
+do_prune: false
+do_opacity_reset: false
+
+#
+cap_max: -1  # no cap
+
+# scheduling
+pause_refine_after_reset: 0
+refine_every: 999999999
+reset_every: 999999999
+refine_start_iter: 999999999
+refine_stop_iter: 999999999
+refine_scale2d_stop_iter: 0
+
+# thresholds
+grow_grad2d: 0.0
+grow_scale3d: 0.0
+prune_scale3d: 0.0
+prune_scale2d: null  # screen-space big-point pruning off
+grow_scale2d: 0.0
+min_opacity: 0.0
+
+# Pruning parameters
+prune_zero_radii: false
+
+# Slightly reduce opacity every few steps
+reduce_opacity: false
+reduce_factor: 0.0  # not used
+reduce_every: 0  # not used
+
+fallback_means_lr: 0.0  # unused (noise_lr=0.0)
+
+# Per-op latent-state init for densified Gaussians: copy | zero | random (governs the learned latent
+# state only; Adam moments follow FastGS). See adc/base.py.
+clone_gaussian_state: copy
+split_gaussian_state: copy
+relocate_gaussian_state: copy
+add_gaussian_state: random

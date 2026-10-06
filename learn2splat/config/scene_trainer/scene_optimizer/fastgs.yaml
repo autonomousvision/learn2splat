@@ -1,0 +1,27 @@
+defaults:
+  - base
+  - override refiner: fastgs
+  - override lr_scheduler: expon
+
+name: adam
+
+# Adam optimizer (FastGS uses standard Adam; same betas/eps as 3DGS).
+betas: [0.9, 0.999]
+eps: 1e-15
+weight_decay: 0.0
+
+# FastGS LRs (submodules/FastGS/arguments/__init__.py). Only the two that differ from the expon
+# defaults are overridden; _sh0/_scales/_quats/_means already match.
+#   _shN       = highfeature_lr / 20 = 0.02 / 20  (gaussian_model.py:205 divides by 20; 0.02 is the
+#                median highfeature_lr across train_base.sh's 13 scenes)
+#   _opacities = opacity_lr (FastGS lowers 3DGS's 0.05 to 0.025)
+lr_scheduler:
+  lr_data:
+    _shN: 1e-3
+    _opacities: 2.5e-2
+
+# The full ADC schedule + thresholds (refine_every=500, densify 500->15000, grad_abs_thresh, ...)
+# come from refiner/fastgs.yaml unchanged.
+
+# The multi-view importance/pruning scores and `mult` require `decoder=fastgs`; under the default
+# gsplat decoder the strategy falls back to vanilla-3DGS ADC (see adc/fastgs.py docstring).

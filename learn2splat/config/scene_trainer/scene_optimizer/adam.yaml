@@ -1,0 +1,11 @@
+defaults:
+  - base
+  - override refiner: default
+  - override lr_scheduler: expon
+
+name: adam
+
+# Adam optimizer
+betas: [0.9, 0.999]
+eps: 1e-15
+weight_decay: 0.0

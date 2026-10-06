@@ -1,0 +1,12 @@
+defaults:
+  - base
+
+name: none
+apply_scheduler:
+  _base: false
+  _means: false
+  _scales: false
+  _quats: false
+  _opacities: false
+  _sh0: false
+  _shN: false

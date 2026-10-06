@@ -1,0 +1,19 @@
+defaults:
+  - base
+  - view_sampler: bounded
+
+name: re10k
+roots: [datasets/re10k]
+augment: true
+
+image_shape: [180, 320]
+highres: false
+
+max_fov: 100.0
+
+skip_bad_shape: true
+near: -1.
+far: -1.
+shuffle_val: true
+test_len: -1
+test_chunk_interval: 1

@@ -1,0 +1,11 @@
+# @package _global_
+
+defaults:
+  - test_base
+  - override /dataset: re10k
+  - override /scene_trainer/scene_initializer: resplat_v1
+  - override /scene_trainer/scene_optimizer: knn_based
+
+dataset:
+  image_shape: [512, 960]
+  ori_image_shape: [512, 960]

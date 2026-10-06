@@ -1,0 +1,40 @@
+# @package _global_
+
+# Evaluate on MegaSynth with the depth-unprojection initializer + 3DGS (Adam) optimizer.
+# Self-contained: needs NO pretrained checkpoint (classic per-scene 3DGS from a depth-init
+# point cloud). Override scene_optimizer + checkpointing to evaluate a learned optimizer.
+
+defaults:
+  - override /dataset: megasynth
+  - override /scene_trainer/scene_initializer: depth
+  - override /scene_trainer/scene_optimizer: adam
+  - override /scene_trainer/decoder: gsplat
+  - override /meta_trainer/test/postprocessing: none
+
+mode: test
+
+dataset:
+  roots: [datasets/megasynth]
+  near: 0.1
+  far: 100.
+  load_depth: true   # required by the depth initializer; image_shape/etc. come from dataset=megasynth
+
+scene_trainer:
+  train_scene_opt: false
+  opt_batch_strategy: fps
+
+checkpointing:
+  pretrained_model: null
+  pretrained_depth: null
+
+meta_trainer:
+  test:
+    compute_scores: true
+    skip_if_outputs_exist: false
+    save_cameras_json: false
+    save_render_image: false
+    save_gaussian: false
+    eval_initialization: false
+
+output_dir: placeholder
+log_slurm_id: true

@@ -1,0 +1,13 @@
+defaults:
+  - base
+  - view_sampler: dense
+
+name: colmap
+roots: null
+scene_name: null
+normalize_world_space: false
+subsample_factor: 8
+subsample_factor_per_scene: null
+symmetric_principal_point: false
+
+crop_size: null

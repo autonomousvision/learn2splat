@@ -1,0 +1,13 @@
+defaults:
+  - base
+
+name: depth
+scaling_factor: 1.0
+init_opacity: 0.1
+sh_degree: 3
+# Longer-side resolution (pixels) to unproject at; null = native. Controls point density:
+# side^2 points per context view, so e.g. 50 over ~40 context views -> ~100k points generated
+# (then capped by *_fixed_gaussians_num if set).
+init_longer_side: 50
+filter_invalid_depth: true
+train_depth_noise_std: 0.0  # train-only per-pixel relative depth noise; 0 = clean GT-depth init

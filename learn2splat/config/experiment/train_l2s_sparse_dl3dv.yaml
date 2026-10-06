@@ -1,0 +1,46 @@
+# @package _global_
+
+defaults:
+  - train_dl3dv
+  - override /meta_trainer/train/ckpt_buffer_cfg: default
+  - override /loss: [ mse, lpips, deltas, stability ]
+
+loss:
+  mse:
+    weight: 1.0
+  lpips:
+    apply_after_step: 0
+    weight: 0.5
+    perceptual_loss: true
+  deltas:
+    weight: 1
+    exclude_by_norm_grad: true
+    exclude_by_norm_grad_opposite: true
+    eps: 1e-8
+    apply_after_step: 100
+
+meta_trainer:
+  train:
+    loss_on_input_views: true
+    loss_on_input_views_num: 4
+    use_ckpt_buffer: true
+  meta_optimizer:
+    lr: 1e-4
+    lr_monodepth: 0.0
+
+scene_trainer:
+  train_scene_opt: true
+  num_update_steps: 2000
+  opt_batch_size: 8
+  train_max_refine: 6
+  train_min_refine: 1
+  # Decoder settings for the learn2splat paper weights (the generic gsplat default is
+  # antialiased / eps2d=0.3; these weights are trained with classic rasterization).
+  decoder:
+    rasterize_mode: classic
+    eps2d: 1e-4
+
+checkpointing:
+  # ReSplat initializer
+  pretrained_initializer: hf://autonomousvision/learn2splat/resplat_init/checkpoints/epoch_20-step_100000.ckpt
+  no_strict_load: false

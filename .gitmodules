@@ -1,0 +1,12 @@
+[submodule "submodules/simple-knn"]
+	path = submodules/simple-knn
+	url = https://github.com/s-esposito/better-simple-knn.git
+	ignore = untracked
+[submodule "submodules/fused-ssim"]
+	path = submodules/fused-ssim
+	url = https://github.com/rahul-goel/fused-ssim.git
+	ignore = untracked
+[submodule "submodules/pycolmap"]
+	path = submodules/pycolmap
+	url = https://github.com/s-esposito/pycolmap.git
+	ignore = untracked

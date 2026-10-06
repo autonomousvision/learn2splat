@@ -1,0 +1,17 @@
+lr_data:
+  _base: 1
+  _means: 1
+  _scales: 1
+  _quats: 1
+  _opacities: 1
+  _sh0: 1
+  _shN: 1
+
+apply_scheduler:
+  _base: true
+  _means: true
+  _scales: true
+  _quats: true
+  _opacities: true
+  _sh0: true
+  _shN: true

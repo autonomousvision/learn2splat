@@ -1,0 +1,37 @@
+defaults:
+  - base
+  - view_sampler: boundedv2_360
+
+name: megasynth
+roots: [datasets/megasynth]
+augment: true
+
+
+image_shape: [512, 512]
+
+max_fov: 100.0
+
+skip_bad_shape: true
+near: -1.
+far: -1.
+shuffle_val: true
+test_len: -1
+test_chunk_interval: 1
+sort_target_index: true
+sort_context_index: true
+
+train_times_per_scene: 1
+test_times_per_scene: 1
+ori_image_shape: [512, 512]
+overfit_max_views: 48
+
+no_mix_test_set: true
+
+# view filtering
+min_views: 0
+max_views: 0
+
+# MegaSynth chunks carry per-view float16 depth; opt in to load it.
+load_depth: false
+
+index_name: index.json
